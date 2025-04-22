@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css"; // ✅ AOS styles
+import "aos/dist/aos.css"; 
 import logo from "./assets/logo.png";
 import braceImg from "./assets/brace.png";  
 import brace1 from "./assets/brace1.png";   
