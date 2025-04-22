@@ -41,7 +41,7 @@ function App() {
       duration: 1000,
       once: true,
     });
-  }, []); // ✅ AOS initialized
+  }, []); 
 
   return (
     <div>
