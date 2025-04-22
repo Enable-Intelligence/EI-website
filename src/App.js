@@ -57,20 +57,19 @@ function App() {
       </nav>
 
       <section id="home" className="section home-section">
-        <div className="home-container">
+         <div className="home-container">
           <div className="home-left">
             <div className="logo-above-text">
               <img src={logo} alt="Logo" style={{ height: "300px" }} />
             </div>
             <h1>
-              Enable Intelligence transforms industries using next-generation{" "}
-              <span className="highlight">AI</span> solutions.
+         
+             <span className="highlight">Enable intelligence</span> is a forward-thinking, AI-driven organization born from a vision to reimagine the way industries operate, make decisions, and create value. In an era where data is abundant but intelligence is rare, we exist to bridge that gap by delivering smart, scalable, and ethical AI solutions across a wide spectrum of industries.
             </h1>
             <p>
-              We pioneer adaptive <span className="highlight">AI</span> across various industries by bridging the gap between technology and human potential.
+             At <span className="highlight">Enable intelligence</span> , we don't just develop AI we enable intelligence. By blending data science, machine learning, and industry expertise, we help our client
             </p>
-            <button className="learn-more-btn">Learn More</button>
-          </div>
+            </div>
           <div className="home-right">
             <div className="brace-text-row">
               <img src={brace1} alt="Opening Brace" className="home-brace-image" />
