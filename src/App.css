@@ -37,7 +37,7 @@
   color: white;
 }
 
-* Navbar section color classes */
+/* Navbar section color classes */
 .navbar.scrolled-home,
 .navbar.scrolled-faqs,
 .navbar.scrolled-contact {
@@ -70,13 +70,13 @@
 }
 
 .logo-above-text {
-  margin-bottom: 10px;
+  margin-bottom: 60px;
 }
 
 .logo-above-text img {
-  height: 120px;
+   max-height: 200px;
   margin-bottom:20px;
-  margin-top: -5rem;
+  margin-top: 0.5rem;
 }
 
 .home-left h1 {
@@ -98,8 +98,8 @@
 .highlight {
   color: #f97316;
   font-weight: bold;
+  font-size: 30px;
 }
-
 
 .home-right {
   flex: 1;
@@ -253,7 +253,6 @@
   height: 40px;
   margin-top: 10px;
 }  
-/* Contact Section */
 #contact {
   background-color: #f97316;
   padding: 80px;
@@ -268,10 +267,11 @@
   flex-wrap: wrap;
 }
 
-/* Left side - Form */
+
 .contact-form-container {
   flex:  0.5 0.5 35%;
   background: white;
+  border-color: #111;
   padding: 40px;
   border-radius: 12px;
   margin-left: -50rem;
@@ -296,7 +296,7 @@
   font-size: 16px;
   align-items: flex-start;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid black;
   margin-bottom: 20px;
   box-sizing: border-box;
 }

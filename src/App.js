@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css"; 
-import logo from "./assets/logo.png";
+import logo from "./assets/logo.PNG";
 import braceImg from "./assets/brace.png";  
 import brace1 from "./assets/brace1.png";   
 import solution1 from "./assets/solution1.png";
@@ -63,7 +63,7 @@ function App() {
               <img src={logo} alt="Logo" style={{ height: "300px" }} />
             </div>
             <h1>
-              <span className="highlight">Enable intelligence</span> is a forward-thinking, AI-driven organization born from a vision to reimagine the way industries operate, make decisions, and create value. In an era where data is abundant but intelligence is rare, we exist to bridge that gap by delivering smart, scalable, and ethical AI solutions across a wide spectrum of industries.
+              <span className="highlight">Enable intelligence </span> is a forward-thinking, AI-driven organization born from a vision to reimagine the way industries operate, make decisions, and create value. In an era where data is abundant but intelligence is rare, we exist to bridge that gap by delivering smart, scalable, and ethical AI solutions across a wide spectrum of industries.
             </h1>
             <p>
               At <span className="highlight">Enable intelligence</span>, we don't just develop AI we enable intelligence. By blending data science, machine learning, and industry expertise, we help our clients.
@@ -191,15 +191,41 @@ function App() {
         <div className="contact-container">
           <div className="contact-form-container">
             <h2>Get in Touch</h2>
-            <form>
-              <input type="text" placeholder="Name" required />
-              <input type="email" placeholder="Email address" required />
-              <textarea placeholder="Message" rows="4" required></textarea>
-              <button type="submit">Submit</button>
-            </form>
+            <form
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const message = form.message.value;
+
+    try {
+      const response = await fetch('http://localhost:3000/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (response.ok) {
+        alert('Email sent successfully!');
+        form.reset();
+      } else {
+        alert('Failed to send email. Try again.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error sending email.');
+    }
+  }}
+>
+  <input type="text" name="name" placeholder="Name" required />
+  <input type="email" name="email" placeholder="Email address" required />
+  <textarea name="message" placeholder="Message" rows="4" required></textarea>
+  <button type="submit">Submit</button>
+</form>
           </div>
           <div className="contact-brace-container">
-            <div className="quote">Got a vision?<br />Let’s build the AI to match.</div>
+            <div className="quote">Got a vision..?<br />Let’s build the AI to match.</div>
             <div className="brace-align-row">
               <div className="brand-text">Enable<br />Intelligence</div>
               <img src={braceImg} alt="Brace" className="brace-image" />
