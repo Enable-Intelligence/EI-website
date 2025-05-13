@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css"; 
-import logo from "./assets/logo.PNG";
+import logo from "./assets/logo.png";
 import braceImg from "./assets/brace.png";  
 import brace1 from "./assets/brace1.png";   
 import solution1 from "./assets/solution1.png";
