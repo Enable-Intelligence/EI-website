@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css"; // ✅ AOS styles
-import logo from "./assets/logo.png";
+import "aos/dist/aos.css"; 
+import logo from "./assets/logo.PNG";
 import braceImg from "./assets/brace.png";  
 import brace1 from "./assets/brace1.png";   
 import solution1 from "./assets/solution1.png";
@@ -41,7 +41,7 @@ function App() {
       duration: 1000,
       once: true,
     });
-  }, []); // ✅ AOS initialized
+  }, []); 
 
   return (
     <div>
@@ -63,13 +63,11 @@ function App() {
               <img src={logo} alt="Logo" style={{ height: "300px" }} />
             </div>
             <h1>
-              Enable Intelligence transforms industries using next-generation{" "}
-              <span className="highlight">AI</span> solutions.
+              <span className="highlight">Enable intelligence </span> is a forward-thinking, AI-driven organization born from a vision to reimagine the way industries operate, make decisions, and create value. In an era where data is abundant but intelligence is rare, we exist to bridge that gap by delivering smart, scalable, and ethical AI solutions across a wide spectrum of industries.
             </h1>
             <p>
-              We pioneer adaptive <span className="highlight">AI</span> across various industries by bridging the gap between technology and human potential.
+              At <span className="highlight">Enable intelligence</span>, we don't just develop AI we enable intelligence. By blending data science, machine learning, and industry expertise, we help our clients.
             </p>
-            <button className="learn-more-btn">Learn More</button>
           </div>
           <div className="home-right">
             <div className="brace-text-row">
@@ -118,11 +116,7 @@ function App() {
       <section id="technology" className="technology-section">
         <div className="technology-left">
           <h2><strong>Technology</strong></h2>
-          <img
-            src={techArrow}
-            alt="Orange arrow"
-            className="technology-arrow"
-          />
+          <img src={techArrow} alt="Orange arrow" className="technology-arrow" />
         </div>
 
         <div className="technology-right">
@@ -165,20 +159,28 @@ function App() {
           <h2 className="faq-heading"><strong>FAQ’s</strong></h2>
           <div className="faq-list">
             <details className="faq-card">
-              <summary>What is SPOCARE?</summary>
-              <p>SPOCARE is a comprehensive medical data platform designed to...</p>
+              <summary>What is Spocare?</summary>
+              <p>Spocare is a healthcare application that enables hospitals and patients to seamlessly manage medical records, appointments, and communication—all in one place.</p>
             </details>
             <details className="faq-card">
-              <summary>Is SPOCARE application integrated with real time hospital data?</summary>
-              <p>Yes, SPOCARE syncs in real time with connected hospital systems...</p>
+              <summary>How do I book or reschedule an appointment in Spocare?</summary>
+              <p>To book an appointment, go to Appointments, select a provider, choose a time slot, and tap Confirm. To reschedule, just tap on the appointment card and select Reschedule.</p>
             </details>
             <details className="faq-card">
-              <summary>Can I upload my historical medical reports data to SPOCARE?</summary>
-              <p>Absolutely! You can upload old medical reports in PDF or image formats...</p>
+              <summary>Can I download my full medical record from Spocare?</summary>
+              <p>Yes, you can. Just go to Health Records › Export to download your record as a PDF. If the file is large, we’ll email you a secure download link.</p>
             </details>
             <details className="faq-card">
-              <summary>How secure is the personal data?</summary>
-              <p>Your data is protected with industry-standard encryption and compliance protocols...</p>
+              <summary>Will Spocare remind me to take my medications?</summary>
+              <p>Absolutely. Spocare automatically sets medication reminders based on your prescription details, so you’ll get timely notifications without needing to set anything manually.</p>
+            </details>
+            <details className="faq-card">
+              <summary>How do you keep my health data safe?</summary>
+              <p>Your privacy is our top priority. We use end-to-end encryption to protect your data, strictly follow HIPAA standards, and we never sell or share your personal health information with third parties.</p>
+            </details>
+            <details className="faq-card">
+              <summary>How can AI benefit our company or industry?</summary>
+              <p>AI features—such as predictive analytics, smart automation, and personalized insights—can help streamline operations, enhance decision-making, and improve both patient and customer experiences. By integrating AI, companies can increase efficiency, reduce errors, and stay competitive in a rapidly evolving market.</p>
             </details>
           </div>
         </div>
@@ -187,16 +189,46 @@ function App() {
 
       <section id="contact">
         <div className="contact-container">
-          <div className="contact-left">
-            <h2><strong>Get in touch</strong></h2>
-            <p><strong>Email</strong> hello@enableintelligence.com</p>
-            <p><strong>Phone</strong> (123) 456-7890</p>
+          <div className="contact-form-container">
+            <h2>Get in Touch</h2>
+            <form
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const message = form.message.value;
+
+    try {
+      const response = await fetch('http://localhost:3000/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (response.ok) {
+        alert('Email sent successfully!');
+        form.reset();
+      } else {
+        alert('Failed to send email. Try again.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error sending email.');
+    }
+  }}
+>
+  <input type="text" name="name" placeholder="Name" required />
+  <input type="email" name="email" placeholder="Email address" required />
+  <textarea name="message" placeholder="Message" rows="4" required></textarea>
+  <button type="submit">Submit</button>
+</form>
           </div>
-          <div className="contact-right">
-            <p className="quote">“Got a vision?<br />Let’s build the AI to match”</p>
-            <div className="logo-section">
-              <p><strong>Enable<br />Intelligence</strong></p>
-              <img src={braceImg} alt="Brace" />
+          <div className="contact-brace-container">
+            <div className="quote">Got a vision..?<br />Let’s build the AI to match.</div>
+            <div className="brace-align-row">
+              <div className="brand-text">Enable<br />Intelligence</div>
+              <img src={braceImg} alt="Brace" className="brace-image" />
             </div>
           </div>
         </div>
