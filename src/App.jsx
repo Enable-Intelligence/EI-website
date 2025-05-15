@@ -27,12 +27,41 @@ import resourceImg from "./assets/resource.png";
  *    inner flex box is centred with symmetric padding.
  */
 
+// Update contact form inputs in dark mode
+const contactFormInputStyles = {
+  light: {
+    backgroundColor: 'bg-white',
+    borderColor: 'border-gray-200',
+    textColor: 'text-gray-900',
+    placeholderColor: 'placeholder-gray-500',
+    focusBorderColor: 'focus:border-orange-500',
+    focusRingColor: 'focus:ring-orange-500/20'
+  },
+  dark: {
+    backgroundColor: 'bg-gray-800',
+    borderColor: 'border-gray-700',
+    textColor: 'text-white',
+    placeholderColor: 'placeholder-gray-400',
+    focusBorderColor: 'focus:border-orange-500',
+    focusRingColor: 'focus:ring-orange-500/20'
+  }
+};
+
 function App() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [ setCurrentSection] = useState("home");
   const [eiSplit, setEiSplit] = useState(false);
   const [isTechSectionVisible, setIsTechSectionVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Loading effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // initialise AOS (scroll animations)
   useEffect(() => {
@@ -275,12 +304,12 @@ function App() {
                     />
                   </span>
                   <br />
-                  <span className="text-gray-800">Where AI Meets Innovation</span>
+                  <span className={`${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Where AI Meets Innovation</span>
                 </h1>
               </motion.div>
 
               <motion.p 
-                className="text-lg md:text-xl text-gray-600 leading-relaxed"
+                className={`text-lg md:text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-600'} leading-relaxed`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -294,12 +323,18 @@ function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <button className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}>
+                <button 
+                  className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden" 
+                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                >
                   <span className="relative z-10 group-hover:text-black">Get Started</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                   <div className="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </button>
-                <button className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden" onClick={() => document.getElementById("technology")?.scrollIntoView({ behavior: "smooth" })}>
+                <button 
+                  className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden" 
+                  onClick={() => document.getElementById('technology')?.scrollIntoView({ behavior: 'smooth' })}
+                >
                   <span className="relative z-10 group-hover:text-black">Learn More</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                   <div className="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -372,24 +407,69 @@ function App() {
       {/* SOLUTIONS SECTION */}
       <section id="solutions" className={`py-16 px-4 md:px-16 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <h2 className="text-4xl font-extrabold text-orange-500">Solutions</h2>
-            <h3 className="text-3xl font-extrabold text-gray-900 text-right">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <h2 className="text-4xl font-extrabold text-orange-500 mb-4 md:mb-0">Solutions</h2>
+            <h3 className="text-3xl font-extrabold text-gray-900 text-center md:text-right">
               Shaping Tomorrow with <span className="text-orange-500">Intelligence</span> Today
             </h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: "SPOCARE", img: solution1 },
-              { title: "SPORTIFY IQ", img: solution2 },
-              { title: "AESTHETIC AI", img: solution3 },
+              { 
+                title: "SPOCARE", 
+                img: solution1,
+                description: "Revolutionizing healthcare through AI-powered diagnostics and patient care management. Our platform combines advanced machine learning with medical expertise to deliver accurate, timely, and personalized healthcare solutions.",
+                features: [
+                  "AI-Powered Diagnostics",
+                  "Patient Care Management",
+                  "Real-time Analytics",
+                  "Secure Data Handling"
+                ]
+              },
+              { 
+                title: "SPORTIFY IQ", 
+                img: solution2,
+                description: "Transforming sports analytics with cutting-edge AI technology. From performance tracking to predictive analytics, we help teams and athletes achieve their peak potential through data-driven insights.",
+                features: [
+                  "Performance Analytics",
+                  "Injury Prevention",
+                  "Team Strategy Optimization",
+                  "Real-time Tracking"
+                ]
+              },
+              { 
+                title: "AESTHETIC AI", 
+                img: solution3,
+                description: "Redefining aesthetic procedures with AI-driven analysis and recommendations. Our platform provides personalized treatment plans and outcome predictions for enhanced aesthetic results.",
+                features: [
+                  "Treatment Planning",
+                  "Outcome Prediction",
+                  "Progress Tracking",
+                  "Personalized Recommendations"
+                ]
+              },
             ].map((s, i) => (
-              <div key={i} className="bg-gray-50 rounded-lg shadow-md p-6 text-center" data-aos="zoom-in" data-aos-delay={i * 100}>
-                <h4 className="text-2xl font-bold text-orange-500 mb-4">{s.title}</h4>
-                <img src={s.img} alt={s.title} className="mx-auto mb-4 h-40 object-contain" />
-                <button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-full transition">
-                  Learn More
-                </button>
+              <div 
+                key={i} 
+                className="group relative bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-2xl transition-all duration-300" 
+                data-aos="zoom-in" 
+                data-aos-delay={i * 100}
+              >
+                {/* Card Content */}
+                <div className="relative z-10">
+                  <h4 className="text-2xl font-bold text-orange-500 mb-4">{s.title}</h4>
+                  <div className="relative h-48 mb-6">
+                    <img 
+                      src={s.img} 
+                      alt={s.title} 
+                      className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </div>
+
+                {/* Hover Effect Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-orange-600/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
@@ -490,46 +570,49 @@ function App() {
               {[...Array(5)].map((_, i) => (
                 <div
                   key={`right-circle-${i}`}
-                  className="absolute inset-0 border-2 border-orange-400/20 rounded-full"
+                  className="absolute inset-0 rounded-full border-2 border-orange-400/20"
                   style={{
-                    transform: `scale(${1 - i * 0.15})`
+                    transform: `scale(${1 - i * 0.15}) rotate(${i * 30}deg)`
                   }}
                 />
               ))}
             </motion.div>
 
-            {/* Floating Particles */}
-            {[...Array(20)].map((_, i) => (
+            {/* Floating Energy Orbs */}
+            {[...Array(15)].map((_, i) => (
               <motion.div
-                key={`right-particle-${i}`}
-                className="absolute w-2 h-2 bg-orange-400/30 rounded-full"
+                key={`right-orb-${i}`}
+                className="absolute w-3 h-3 bg-orange-400/30 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`
                 }}
                 animate={{
-                  y: [0, -30, 0],
+                  y: [0, -20, 0],
                   opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.5, 1]
+                  scale: [1, 1.2, 1],
+                  x: [0, Math.random() * 20 - 10, 0]
                 }}
                 transition={{
                   duration: 2 + Math.random(),
                   repeat: Infinity,
                   delay: i * 0.1
                 }}
-              />
+              >
+                <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
+              </motion.div>
             ))}
 
-            {/* Energy Lines */}
-            {[...Array(8)].map((_, i) => (
+            {/* Energy Waves */}
+            {[...Array(6)].map((_, i) => (
               <motion.div
-                key={`right-line-${i}`}
+                key={`right-wave-${i}`}
                 className="absolute h-1 bg-gradient-to-l from-orange-400/20 to-transparent"
                 style={{
                   right: '0',
-                  top: `${i * 12}%`,
+                  top: `${i * 15}%`,
                   width: '100%',
-                  transform: `rotate(${-i * 5}deg)`
+                  transform: `rotate(${i * -5}deg)`
                 }}
                 animate={{
                   opacity: [0.2, 0.5, 0.2],
@@ -542,6 +625,24 @@ function App() {
                 }}
               />
             ))}
+
+            {/* Pulsing Core */}
+            <motion.div
+              className="absolute top-1/2 right-1/2 w-32 h-32 -translate-y-1/2 translate-x-1/2"
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <div className="absolute inset-0 bg-orange-400/20 rounded-full blur-xl"></div>
+              <div className="absolute inset-4 bg-orange-400/30 rounded-full blur-lg"></div>
+              <div className="absolute inset-8 bg-orange-400/40 rounded-full"></div>
+            </motion.div>
           </div>
         </div>
 
@@ -551,7 +652,7 @@ function App() {
             <div className="inline-block bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-4 md:px-8 py-2 md:py-4 rounded-full mb-4 md:mb-6">
               <h2 className="text-2xl md:text-5xl font-black text-orange-500">Technology</h2>
             </div>
-            <p className="text-sm md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            <p className={`text-sm md:text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} max-w-3xl mx-auto leading-relaxed`}>
               At the core of our platform lies a fusion of industry‑grade LLMs, optimized inference pipelines, and proprietary deployment frameworks.
             </p>
           </div>
@@ -857,8 +958,14 @@ function App() {
             animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <div className="inline-block bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-4 md:px-8 py-2 md:py-4 rounded-full">
-              <p className="text-sm md:text-lg text-gray-700 max-w-3xl mx-auto">
+            <div className={`inline-block px-4 md:px-8 py-2 md:py-4 rounded-full ${
+              isDarkMode 
+                ? 'bg-gradient-to-r from-orange-500/40 to-orange-600/40' 
+                : 'bg-gradient-to-r from-orange-500/20 to-orange-600/20'
+            }`}>
+              <p className={`text-sm md:text-lg max-w-3xl mx-auto ${
+                isDarkMode ? 'text-gray-100' : 'text-gray-800'
+              }`}>
                 Our technology stack is constantly evolving, incorporating the latest advancements in AI and machine learning to deliver cutting-edge solutions.
               </p>
             </div>
@@ -867,7 +974,7 @@ function App() {
       </section>
 
       {/* RESOURCES SECTION */}
-      <section id="resources" className={`${isDarkMode ? 'bg-gray-800' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-24 px-4 md:px-16 relative overflow-hidden`}>
+      <section id="resources" className={`${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-24 px-4 md:px-16 relative overflow-hidden`}>
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
@@ -880,57 +987,86 @@ function App() {
             <div className="inline-block bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-8 py-4 rounded-full mb-6">
               <h2 className="text-5xl font-black text-orange-500">Resources</h2>
             </div>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Explore our latest insights, articles, and guides to stay ahead in the world of AI
+            <p className={`text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} max-w-3xl mx-auto`}>
+              Discover insights, guides, and innovations shaping the future of AI
             </p>
           </div>
 
           {/* Featured Resource */}
           <div className="relative mb-16" data-aos="fade-up">
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div className="bg-white rounded-3xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
               <div className="grid md:grid-cols-2 gap-8">
-                <div className="relative h-96">
-                  <img src={resourceImg} alt="Featured Resource" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="relative h-96 group">
+                  <img src={resourceImg} alt="Featured Resource" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 p-8 text-white">
-                    <span className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold">Featured</span>
+                    <span className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold inline-flex items-center">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                      </svg>
+                      Featured Article
+                    </span>
                     <h3 className="text-3xl font-bold mt-4">World Refugee Day 2030</h3>
+                    <p className="text-gray-200 mt-2">Exploring the intersection of AI and humanitarian efforts</p>
                   </div>
                 </div>
                 <div className="p-8 flex flex-col justify-center">
-                  <p className="text-gray-600 text-lg mb-6">
-                    Join us in exploring the intersection of AI and humanitarian efforts. Discover how technology is shaping the future of refugee support and global aid.
-                  </p>
-                  <div className="flex items-center space-x-4">
-                    <button className="bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1">
-                      Read More
-                    </button>
-                    <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors">
-                      Download PDF
-                    </button>
+                  <div className="space-y-6">
+                    <p className="text-gray-600 text-lg leading-relaxed">
+                      Join us in exploring how artificial intelligence is revolutionizing humanitarian aid and refugee support. Discover innovative solutions and real-world applications that are making a difference.
+                    </p>
+                    <div className="flex flex-wrap gap-4">
+                      <button className="bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1 flex items-center">
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        Read Article
+                      </button>
+                      <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors flex items-center">
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Download PDF
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Resource Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Resource Categories */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
               {
                 title: "AI in Healthcare",
                 desc: "Exploring the future of medical diagnostics",
-                tag: "Healthcare"
+                tag: "Healthcare",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                  </svg>
+                )
               },
               {
                 title: "Machine Learning Basics",
                 desc: "A comprehensive guide for beginners",
-                tag: "Education"
+                tag: "Education",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                )
               },
               {
                 title: "Data Privacy",
                 desc: "Best practices for secure AI implementation",
-                tag: "Security"
+                tag: "Security",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                )
               }
             ].map((r, i) => (
               <motion.div
@@ -939,19 +1075,47 @@ function App() {
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
               >
-                <span className="inline-block bg-orange-500/10 text-orange-500 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                  {r.tag}
-                </span>
-                <h4 className="text-xl font-bold text-gray-900 mb-3">{r.title}</h4>
-                <p className="text-gray-600 mb-6">{r.desc}</p>
-                <div className="flex items-center justify-between">
-                  <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors">
-                    Read Article
-                  </button>
-                  <span className="text-gray-400 text-sm">5 min read</span>
+                <div className="flex items-start space-x-4">
+                  <div className="bg-orange-500/10 p-3 rounded-xl text-orange-500">
+                    {r.icon}
+                  </div>
+                  <div className="flex-1">
+                    <span className="inline-block bg-orange-500/10 text-orange-500 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                      {r.tag}
+                    </span>
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">{r.title}</h4>
+                    <p className="text-gray-600 mb-6">{r.desc}</p>
+                    <div className="flex items-center justify-between">
+                      <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors flex items-center">
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                        Read Article
+                      </button>
+                      <span className="text-gray-400 text-sm">5 min read</span>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
+          </div>
+
+          {/* Newsletter Subscription */}
+          <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl p-8 md:p-12 text-white" data-aos="fade-up">
+            <div className="max-w-3xl mx-auto text-center">
+              <h3 className="text-3xl font-bold mb-4">Stay Updated</h3>
+              <p className="text-white/80 mb-8">Subscribe to our newsletter for the latest insights and updates in AI technology</p>
+              <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
+                <input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  className="flex-1 px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:border-white/40"
+                />
+                <button className="bg-white text-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1">
+                  Subscribe
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1037,7 +1201,10 @@ function App() {
           {/* Contact CTA */}
           <div className="text-center mt-16" data-aos="fade-up">
             <p className="text-xl mb-6">Still have questions?</p>
-            <button className="bg-white text-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1">
+            <button 
+              className="bg-white text-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1"
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Contact Our Team
             </button>
           </div>
@@ -1049,109 +1216,182 @@ function App() {
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
-            <h2 className="text-4xl font-black mb-4">Let's Talk</h2>
-            <p className="text-xl text-gray-600">We're here to help and answer any questions you might have</p>
+            <h2 className="text-4xl font-black mb-4 text-orange-500">Let's Talk</h2>
+            <p className={`text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
+              We're here to help and answer any questions you might have
+            </p>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-16">
             {/* Contact Form */}
-            <div className="flex-1 bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl" data-aos="fade-right">
-              <form className="space-y-4">
+            <div className={`flex-1 p-8 rounded-3xl shadow-xl ${
+              isDarkMode 
+                ? 'bg-gradient-to-br from-gray-800 to-gray-900' 
+                : 'bg-gradient-to-br from-gray-50 to-white'
+            }`} data-aos="fade-right">
+              <form className="space-y-6">
                 <div>
-                  <label className="block text-gray-700 font-medium mb-1">Name</label>
+                  <label className={`block font-medium mb-2 ${
+                    isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    <span className="flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      Name
+                    </span>
+                  </label>
                   <input 
                     type="text" 
                     placeholder="Your name" 
-                    className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all" 
+                    className={`w-full p-4 border-2 rounded-xl transition-all ${
+                      isDarkMode 
+                        ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
+                        : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
+                    }`}
                     required 
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-1">Email</label>
+                  <label className={`block font-medium mb-2 ${
+                    isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    <span className="flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Email
+                    </span>
+                  </label>
                   <input 
                     type="email" 
                     placeholder="Your email" 
-                    className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all" 
+                    className={`w-full p-4 border-2 rounded-xl transition-all ${
+                      isDarkMode 
+                        ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
+                        : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
+                    }`}
                     required 
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-1">Message</label>
+                  <label className={`block font-medium mb-2 ${
+                    isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    <span className="flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                      </svg>
+                      Message
+                    </span>
+                  </label>
                   <textarea 
                     placeholder="How can we help?" 
-                    rows={3} 
-                    className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all" 
+                    rows={4} 
+                    className={`w-full p-4 border-2 rounded-xl transition-all ${
+                      isDarkMode 
+                        ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
+                        : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
+                    }`}
                     required
                   ></textarea>
                 </div>
                 <button 
                   type="submit" 
-                  className="w-full bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1"
+                  className="w-full bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1 flex items-center justify-center"
                 >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
                   Send Message
                 </button>
               </form>
 
               {/* Additional Contact Info */}
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">Quick Contact Info</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-orange-500/10 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className={`mt-12 pt-8 border-t ${
+                isDarkMode ? 'border-gray-700' : 'border-gray-200'
+              }`}>
+                <h3 className={`text-2xl font-semibold mb-6 ${
+                  isDarkMode ? 'text-gray-200' : 'text-gray-800'
+                }`}>
+                  <span className="flex items-center">
+                    <svg className="w-6 h-6 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                    </svg>
+                    Quick Contact Info
+                  </span>
+                </h3>
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                      isDarkMode ? 'bg-orange-500/20' : 'bg-orange-500/10'
+                    }`}>
+                      <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Phone</p>
-                      <p className="font-medium">+91 82972 11188</p>
+                      <p className={`text-sm font-medium ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Phone</p>
+                      <p className={`text-lg font-semibold ${
+                        isDarkMode ? 'text-gray-200' : 'text-gray-900'
+                      }`}>+91 82972 11188</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-orange-500/10 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                      isDarkMode ? 'bg-orange-500/20' : 'bg-orange-500/10'
+                    }`}>
+                      <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Email</p>
-                      <p className="font-medium">support@enableintelligence.com</p>
+                      <p className={`text-sm font-medium ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Email</p>
+                      <p className={`text-lg font-semibold ${
+                        isDarkMode ? 'text-gray-200' : 'text-gray-900'
+                      }`}>support@enableintelligence.com</p>
                     </div>
                   </div>
-                </div>
 
-                {/* Office Hours */}
-                <div className="mt-6 p-4 bg-orange-50 rounded-xl">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  {/* Office Hours */}
+                  <div className={`p-6 rounded-xl ${
+                    isDarkMode ? 'bg-gray-800' : 'bg-orange-50'
+                  }`}>
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                        isDarkMode ? 'bg-orange-500/30' : 'bg-orange-500/20'
+                      }`}>
+                        <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className={`text-sm font-medium ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>Office Hours</p>
+                        <p className={`text-lg font-semibold ${
+                          isDarkMode ? 'text-gray-200' : 'text-gray-900'
+                        }`}>Mon - Fri: 9:00 AM - 6:00 PM EST</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Social Links */}
+                  <div className="flex justify-center space-x-4 pt-4">
+                    <a 
+                      href="#" 
+                      className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1"
+                    >
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                       </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Office Hours</p>
-                      <p className="font-medium">Mon - Fri: 9:00 AM - 6:00 PM EST</p>
-                    </div>
+                    </a>
                   </div>
-                </div>
-
-                {/* Social Links */}
-                <div className="mt-6 flex justify-center space-x-4">
-                  <a href="#" className="w-10 h-10 bg-orange-500/10 rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                  </a>
-                  <a href="#" className="w-10 h-10 bg-orange-500/10 rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                    </svg>
-                  </a>
-                  <a href="#" className="w-10 h-10 bg-orange-500/10 rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                  </a>
                 </div>
               </div>
             </div>
@@ -1283,6 +1523,239 @@ function App() {
           © {new Date().getFullYear()} Enable Intelligence. All rights reserved.
         </motion.div>
       </footer>
+
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <motion.div
+            key="loading"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {/* Energy Lines from Edges */}
+            {[
+              { from: 'top', rotate: 0, delay: 0.3 },
+              { from: 'right', rotate: 90, delay: 0.4 },
+              { from: 'bottom', rotate: 180, delay: 0.5 },
+              { from: 'left', rotate: 270, delay: 0.6 }
+            ].map((direction, index) => (
+              <motion.div
+                key={`energy-${index}`}
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: direction.delay }}
+              >
+                {/* Main Energy Line */}
+                <motion.div
+                  className="absolute w-[200%] h-2 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600"
+                  style={{
+                    transform: `rotate(${direction.rotate}deg)`,
+                    transformOrigin: 'center',
+                    opacity: 0.9
+                  }}
+                  initial={{ 
+                    scale: 0,
+                    opacity: 0,
+                    x: direction.from === 'left' ? '-100%' : direction.from === 'right' ? '100%' : 0,
+                    y: direction.from === 'top' ? '-100%' : direction.from === 'bottom' ? '100%' : 0
+                  }}
+                  animate={{
+                    scale: [0, 1],
+                    opacity: [0, 0.9, 0],
+                    x: 0,
+                    y: 0
+                  }}
+                  transition={{
+                    duration: 1.2,
+                    delay: direction.delay,
+                    ease: "easeOut"
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 animate-pulse"></div>
+                </motion.div>
+
+                {/* Energy Particles */}
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={`particle-${index}-${i}`}
+                    className="absolute w-1 h-1 bg-orange-500 rounded-full"
+                    style={{
+                      transform: `rotate(${direction.rotate}deg)`,
+                      transformOrigin: 'center'
+                    }}
+                    initial={{ 
+                      scale: 0,
+                      opacity: 0,
+                      x: direction.from === 'left' ? '-100%' : direction.from === 'right' ? '100%' : 0,
+                      y: direction.from === 'top' ? '-100%' : direction.from === 'bottom' ? '100%' : 0
+                    }}
+                    animate={{
+                      scale: [0, 1.5, 0],
+                      opacity: [0, 0.8, 0],
+                      x: [0, Math.cos(i * 45 * Math.PI / 180) * 100],
+                      y: [0, Math.sin(i * 45 * Math.PI / 180) * 100]
+                    }}
+                    transition={{
+                      duration: 1,
+                      delay: direction.delay + i * 0.1,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-b from-orange-600 via-orange-500 to-orange-600 animate-pulse"></div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            ))}
+
+            {/* Letters Container */}
+            <div className="relative flex items-center justify-center">
+              {/* Initial White EI */}
+              <motion.div
+                className="text-[15rem] font-black text-white relative"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                EI
+              </motion.div>
+
+              {/* Charging Effect */}
+              <motion.div
+                className="absolute inset-0"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.4, delay: 1.2 }}
+              >
+                {/* Charging Animation */}
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2 }}
+                >
+                  <motion.span
+                    className="text-[15rem] font-black text-orange-500 relative"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 1.2 }}
+                  >
+                    EI
+                  </motion.span>
+                </motion.div>
+
+                {/* Power Core Effect */}
+                <motion.div
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 1.2 }}
+                >
+                  {/* Core Glow */}
+                  <div className="absolute inset-0 bg-orange-500 rounded-full animate-pulse opacity-30 blur-xl"></div>
+                  
+                  {/* Power Rings */}
+                  {[...Array(3)].map((_, i) => (
+                    <motion.div
+                      key={`ring-${i}`}
+                      className="absolute inset-0 border-2 border-orange-500 rounded-full"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.8, 0.4, 0.8]
+                      }}
+                      transition={{
+                        duration: 2,
+                        delay: 1.2 + i * 0.2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
+                </motion.div>
+
+                {/* Energy Burst Effect */}
+                <motion.div
+                  className="absolute inset-0"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 1.5 }}
+                >
+                  {[...Array(24)].map((_, i) => (
+                    <motion.div
+                      key={`burst-${i}`}
+                      className="absolute w-1 h-1 bg-orange-500 rounded-full"
+                      style={{
+                        left: '50%',
+                        top: '50%',
+                        transform: `translate(-50%, -50%) rotate(${i * 15}deg)`
+                      }}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{
+                        scale: [0, 2, 0],
+                        opacity: [0, 1, 0],
+                        x: [
+                          0,
+                          Math.cos(i * Math.PI / 12) * 200,
+                          Math.cos(i * Math.PI / 12) * 300
+                        ],
+                        y: [
+                          0,
+                          Math.sin(i * Math.PI / 12) * 200,
+                          Math.sin(i * Math.PI / 12) * 300
+                        ]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        delay: 1.5 + i * 0.05,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                {/* Electric Lines */}
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={`electric-${i}`}
+                    className="absolute w-1 h-32 bg-gradient-to-b from-orange-500 to-transparent"
+                    style={{
+                      left: '50%',
+                      top: '50%',
+                      transform: `translate(-50%, -50%) rotate(${i * 45}deg)`
+                    }}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{
+                      scale: [0, 1, 0],
+                      opacity: [0, 0.8, 0]
+                    }}
+                    transition={{
+                      duration: 1,
+                      delay: 1.8 + i * 0.1,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-white/30 rounded-full blur-sm"></div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* ... existing main content ... */}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
