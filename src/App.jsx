@@ -160,7 +160,7 @@ function App() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  },);
 
   const navLinks = [
     { id: "home", label: "Home" },
@@ -340,11 +340,12 @@ function App() {
               <div className="absolute inset-0 bg-orange-500/20 rounded-full blur-2xl animate-pulse"></div>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-12 max-w-4xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-center space-y-4"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
                   <span className="text-orange-500 relative inline-block">
@@ -356,29 +357,39 @@ function App() {
                       transition={{ duration: 1, delay: 0.5 }}
                     />
                   </span>
-                  <br />
-                  <span className={`${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Where AI Meets Innovation</span>
+                  <div className="mt-4">
+                    <span className={`${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Where AI Meets Innovation</span>
+                  </div>
                 </h1>
               </motion.div>
 
-              <motion.p 
-                className={`text-lg md:text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-600'} leading-relaxed`}
+              <motion.div 
+                className={`text-center space-y-6 ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Empowering Industries with Next-Generation Adaptive AI
-                At Enable Intelligence, we are revolutionizing the future of business through cutting-edge artificial intelligence solutions. Our mission is to unlock the full potential of adaptive AI by seamlessly integrating advanced technologies with human insight. From manufacturing and healthcare to finance and beyond, we help organizations transform, innovate, and thrive in a rapidly evolving digital landscape. By bridging the gap between technology and human potential, we empower industries to make smarter decisions, automate complex processes, and create meaningful impact at scale.
-              </motion.p>
+                <p className="text-xl md:text-2xl font-bold text-orange-500">
+                  Empowering Industries with Next-Generation Adaptive AI
+                </p>
+                <div className="space-y-4 text-lg md:text-xl leading-relaxed">
+                  <p>
+                    At Enable Intelligence, we are revolutionizing the future of business through cutting-edge artificial intelligence solutions.
+                  </p>
+                  <p>
+                    We help organizations transform, innovate, and thrive in a rapidly evolving digital landscape by bridging the gap between technology and human potential.
+                  </p>
+                </div>
+              </motion.div>
 
               <motion.div 
-                className="flex flex-wrap gap-4 pt-4"
+                className="flex flex-wrap justify-center gap-6 pt-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <button 
-                  className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden" 
+                  className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden min-w-[200px]" 
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <span className="relative z-10 group-hover:text-black">Get Started</span>
@@ -386,7 +397,7 @@ function App() {
                   <div className="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </button>
                 <button 
-                  className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden" 
+                  className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden min-w-[200px]" 
                   onClick={() => document.getElementById('technology')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <span className="relative z-10 group-hover:text-black">Learn More</span>
@@ -529,7 +540,7 @@ function App() {
               { 
                 title: "AESTHETIC AI", 
                 img: solution3,
-                description: "Aesthetics AI is an innovative application that leverages artificial intelligence to help users enhance their visual presence—whether it’s personal style, interior design, branding, or digital content. By combining cutting-edge AI with principles of aesthetics, the app offers smart, tailored suggestions that elevate the look and feel of whatever you're working on.",
+                description: "Aesthetics AI is an innovative application that leverages artificial intelligence to help users enhance their visual presence—whether it's personal style, interior design, branding, or digital content. By combining cutting-edge AI with principles of aesthetics, the app offers smart, tailored suggestions that elevate the look and feel of whatever you're working on.",
                 features: [
                   "Treatment Planning",
                   "Outcome Prediction",
@@ -551,7 +562,7 @@ function App() {
               >
                 {/* Desktop View - Unchanged */}
                 <div className="hidden md:block">
-                  <h4 className="text-2xl font-bold text-orange-500 mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">{s.title}</h4>
+                  <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]`}>{s.title}</h4>
                   <div className="relative h-48 mb-6">
                     <img 
                       src={s.img} 
@@ -578,7 +589,7 @@ function App() {
 
                 {/* Mobile View - Same as Desktop but with Tap */}
                 <div className="md:hidden">
-                  <h4 className={`text-2xl font-bold text-orange-500 mb-4 transition-all duration-300 ${
+                  <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 transition-all duration-300 ${
                     activeCard === i ? 'opacity-0' : 'opacity-100'
                   }`}>{s.title}</h4>
                   <div className="relative h-48 mb-6">
