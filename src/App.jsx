@@ -301,7 +301,7 @@ function App() {
       </nav>
 
       {/* HOME SECTION */}
-      <section id="home" className={`min-h-screen flex flex-col lg:flex-row ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative`}>
+      <section id="home" className={`min-h-screen flex flex-col lg:flex-row ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative pt-16`}>
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full">
@@ -711,494 +711,308 @@ function App() {
       </section>
 
       {/* TECHNOLOGY SECTION */}
-      <section id="technology" className={`relative ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-8 md:py-24 px-2 md:px-16 overflow-hidden w-full`} ref={techSectionRef}>
+      <section id="technology" className={`relative h-screen flex items-center ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} overflow-hidden w-full pt-16`} ref={techSectionRef}>
         {/* Modern Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent"></div>
           <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
+          
+          {/* Enhanced Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          
+          {/* Floating Tech Particles */}
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={`tech-particle-${i}`}
+              className="absolute w-1.5 h-1.5 bg-orange-500/20 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`
+              }}
+              animate={{
+                y: [0, -20, 0],
+                opacity: [0.3, 0.8, 0.3],
+                scale: [1, 1.5, 1]
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: i * 0.1
+              }}
+            />
+          ))}
         </div>
 
-        {/* Decorative Left Side Design */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-96 h-[600px] opacity-80 hidden md:block">
-          <div className="relative w-full h-full">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent"></div>
-            
-            {/* Rotating Hexagons */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            >
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={`left-hex-${i}`}
-                  className="absolute inset-0 border-2 border-orange-400/30"
-                  style={{
-                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                    transform: `scale(${1 - i * 0.15}) rotate(${i * 45}deg)`
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Floating Particles */}
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={`left-particle-${i}`}
-                className="absolute w-2 h-2 bg-orange-400/40 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`
-                }}
-                animate={{
-                  y: [0, -30, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.5, 1]
-                }}
-                transition={{
-                  duration: 3 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: i * 0.1
-                }}
-              />
-            ))}
-                  
-                  {/* Energy Lines */}
-            {[...Array(8)].map((_, i) => (
-                    <motion.div
-                key={`left-line-${i}`}
-                      className="absolute h-1 bg-gradient-to-r from-orange-400/30 to-transparent"
-                      style={{
-                        left: '0',
-                  top: `${i * 12}%`,
-                        width: '100%',
-                  transform: `rotate(${i * 5}deg)`
-                      }}
-                      animate={{
-                        opacity: [0.2, 0.5, 0.2],
-                        scaleX: [0.8, 1.2, 0.8]
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                  delay: i * 0.2
-                      }}
-                    />
-                  ))}
+        <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 relative h-full flex flex-col">
+          {/* Modern Section Header with Enhanced Design */}
+          <div className="flex flex-col items-center text-center pt-4 mb-4" data-aos="fade-up">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl"></div>
+              <div className="inline-block bg-gradient-to-r from-orange-500/20 to-orange-600/20 px-6 py-2 rounded-2xl backdrop-blur-sm relative">
+                <h2 className="text-4xl md:text-5xl font-black text-orange-500">Technology</h2>
+              </div>
+            </div>
+            <p className={`mt-3 text-base md:text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'} max-w-2xl`}>
+              Harnessing the power of artificial intelligence to transform industries
+            </p>
           </div>
-                </div>
 
-        {/* Decorative Right Side Design */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-[600px] opacity-80 hidden md:block">
-          <div className="relative w-full h-full">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-l from-orange-500/10 to-transparent"></div>
-            
-            {/* Rotating Circles */}
-                    <motion.div
-              className="absolute inset-0"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            >
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={`right-circle-${i}`}
-                  className="absolute inset-0 rounded-full border-2 border-orange-400/30"
-                  style={{
-                    transform: `scale(${1 - i * 0.15}) rotate(${i * 30}deg)`
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Floating Energy Orbs */}
-            {[...Array(15)].map((_, i) => (
-              <motion.div
-                key={`right-orb-${i}`}
-                className="absolute w-3 h-3 bg-orange-400/40 rounded-full"
-                      style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`
-                      }}
-                      animate={{
-                        y: [0, -20, 0],
-                        opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.2, 1],
-                  x: [0, Math.random() * 20 - 10, 0]
-                      }}
-                      transition={{
-                        duration: 3 + Math.random() * 2,
-                        repeat: Infinity,
-                  delay: i * 0.1
-                }}
+          {/* Main Content Grid - Adjusted for better alignment and spacing */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto flex-1">
+            {/* Left Side: Main Animation - Adjusted position */}
+            <div className="flex justify-center lg:justify-start lg:pl-12">
+              <div 
+                className="relative w-72 h-72 md:w-96 md:h-96 cursor-pointer select-none group"
+                onClick={() => setEiSplit((v) => !v)}
               >
-                <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
-              </motion.div>
-            ))}
-
-            {/* Energy Waves */}
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={`right-wave-${i}`}
-                className="absolute h-1 bg-gradient-to-l from-orange-400/30 to-transparent"
-                style={{
-                  right: '0',
-                  top: `${i * 15}%`,
-                  width: '100%',
-                  transform: `rotate(${i * -5}deg)`
-                }}
-                      animate={{
-                  opacity: [0.2, 0.5, 0.2],
-                  scaleX: [0.8, 1.2, 0.8]
-                      }}
-                      transition={{
-                  duration: 3,
-                        repeat: Infinity,
-                  delay: i * 0.2
-                      }}
-                    />
-                  ))}
-
-                  {/* Pulsing Core */}
-                  <motion.div 
-              className="absolute top-1/2 right-1/2 w-32 h-32 -translate-y-1/2 translate-x-1/2"
+                {/* Enhanced Main Circle */}
+                <div className="absolute inset-0">
+                  {/* Outer Circle with Enhanced Glow */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-300/30 to-orange-400/30"
                     animate={{
-                      scale: [1, 1.1, 1],
-                      opacity: [0.3, 0.5, 0.3]
+                      scale: [1, 1.02, 1],
+                      opacity: [0.8, 1, 0.8]
                     }}
-                    transition={{
+                    transition={{ 
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut"
                     }}
                   >
-                    <div className="absolute inset-0 bg-orange-400/30 rounded-full blur-xl"></div>
-                    <div className="absolute inset-4 bg-orange-400/40 rounded-full blur-lg"></div>
-                    <div className="absolute inset-8 bg-orange-400/50 rounded-full"></div>
+                    <div className="absolute inset-0 bg-white/20 rounded-full blur-xl"></div>
+                    <div className="absolute inset-0 rounded-full border-2 border-orange-400/20"></div>
                   </motion.div>
-                  </div>
-                </div>
 
-        <div className="w-full max-w-7xl mx-auto relative">
-          {/* Modern Section Header */}
-          <div className="flex flex-col items-center text-center mb-16 md:mb-24 px-2 md:px-0" data-aos="fade-up">
-            <div className="inline-block bg-gradient-to-r from-orange-500/20 to-orange-600/20 px-8 py-4 rounded-2xl backdrop-blur-sm mb-6">
-              <h2 className="text-4xl md:text-6xl font-black text-orange-500">Technology</h2>
-            </div>
-            <p className={`text-lg md:text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} max-w-3xl mx-auto leading-relaxed`}>
-              At the core of our platform lies a fusion of industry‑grade LLMs, optimized inference pipelines, and proprietary deployment frameworks.
-            </p>
-          </div>
-
-          {/* Main Animation */}
-          <div className="flex flex-col items-center justify-center mb-16 md:mb-24 px-2 md:px-0">
-            <div 
-              className="relative w-56 h-56 md:w-96 md:h-96 cursor-pointer select-none group"
-              onClick={() => setEiSplit((v) => !v)}
-            >
-              {/* Main Circle */}
-              <div className="absolute inset-0">
-                {/* Outer Circle */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-300/30 to-orange-400/30"
-                  animate={{
-                    scale: [1, 1.02, 1],
-                    opacity: [0.8, 1, 0.8]
-                  }}
-                      transition={{ 
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/20 rounded-full blur-xl"></div>
-                </motion.div>
-
-                {/* Inner Circle */}
-                <motion.div
-                  className="absolute inset-8 rounded-full bg-gradient-to-br from-orange-300/20 to-orange-400/20"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                    opacity: [0.6, 0.8, 0.6]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/20 rounded-full blur-lg"></div>
-                </motion.div>
-
-                {/* Rotating Rings */}
-                <motion.div
-                  className="absolute inset-0"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                >
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={`ring-${i}`}
-                      className="absolute inset-0 rounded-full border-2 border-orange-400/30"
-                      style={{
-                        transform: `rotate(${i * 60}deg) scale(${1 - i * 0.1})`
-                      }}
-                    />
-                  ))}
-                </motion.div>
-                </div>
-
-              {/* EI Letters */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  className="relative flex items-center justify-center"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={isTechSectionVisible ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
-                  transition={{ duration: 1, delay: 0.4 }}
-                >
-                  {/* Power Ring Effect */}
-                  <AnimatePresence>
-                    {!eiSplit && isTechSectionVisible && (
-                      <>
-                        {/* Outer Power Ring */}
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1.2, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-10"
-                        >
-                          <div className="absolute inset-0 rounded-full border-4 border-orange-400/40 blur-sm"></div>
-                          <div className="absolute inset-0 rounded-full border-2 border-orange-400/60"></div>
-                        </motion.div>
-
-                        {/* Spark Ring */}
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ duration: 1 }}
-                          className="absolute inset-0 z-20"
-                        >
-                          {[...Array(48)].map((_, i) => (
-                            <motion.div
-                              key={`power-spark-${i}`}
-                              className="absolute w-1.5 h-1.5 bg-orange-400 rounded-full"
-                              style={{
-                                left: '50%',
-                                top: '50%',
-                                transform: `translate(-50%, -50%) rotate(${i * 7.5}deg)`
-                              }}
+                  {/* Inner Circle with Enhanced Effects */}
+                  <motion.div
+                    className="absolute inset-8 rounded-full bg-gradient-to-br from-orange-300/20 to-orange-400/20"
                     animate={{
-                                scale: [0, 1.5, 0],
-                                opacity: [0, 1, 0],
-                                x: [
-                                  Math.cos(i * Math.PI / 24) * 120,
-                                  Math.cos(i * Math.PI / 24) * 100,
-                                  Math.cos(i * Math.PI / 24) * 120
-                                ],
-                                y: [
-                                  Math.sin(i * Math.PI / 24) * 120,
-                                  Math.sin(i * Math.PI / 24) * 100,
-                                  Math.sin(i * Math.PI / 24) * 120
-                      ]
+                      scale: [1, 1.05, 1],
+                      opacity: [0.6, 0.8, 0.6]
                     }}
                     transition={{
-                      duration: 2,
+                      duration: 4,
                       repeat: Infinity,
-                                delay: i * 0.02,
-                                ease: "easeInOut"
-                              }}
-                            >
-                              <div className="absolute inset-0 bg-white/80 rounded-full blur-sm"></div>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-
-                        {/* Energy Burst */}
-                        <motion.div
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-10"
-                        >
-                          {[...Array(24)].map((_, i) => (
-                            <motion.div
-                              key={`energy-burst-${i}`}
-                              className="absolute w-1 h-1 bg-orange-400 rounded-full"
-                              style={{
-                                left: '50%',
-                                top: '50%',
-                                transform: `translate(-50%, -50%) rotate(${i * 15}deg)`
-                              }}
-                      animate={{
-                                scale: [0, 2, 0],
-                                opacity: [0, 1, 0],
-                                x: [
-                                  0,
-                                  Math.cos(i * Math.PI / 12) * 80,
-                                  Math.cos(i * Math.PI / 12) * 120
-                                ],
-                                y: [
-                                  0,
-                                  Math.sin(i * Math.PI / 12) * 80,
-                                  Math.sin(i * Math.PI / 12) * 120
-                        ]
-                      }}
-                      transition={{
-                                duration: 1.5,
-                        repeat: Infinity,
-                                delay: i * 0.05,
-                                ease: "easeOut"
-                              }}
-                            >
-                              <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      </>
-                    )}
-                  </AnimatePresence>
-
-                  <motion.span
-                    initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={
-                      eiSplit ? { x: -170, rotate: -15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
-                    }
-                    transition={{ 
-                      type: 'spring', 
-                      stiffness: 100, 
-                      damping: 20, 
-                      duration: 1.5,
-                      delay: 0.6 
+                      ease: "easeInOut"
                     }}
-                    className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
-                    style={{ fontFamily: 'inherit' }}
                   >
-                    E
-                  </motion.span>
-                  <motion.span
-                    initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={
-                      eiSplit ? { x: 135, rotate: 15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
-                    }
-                    transition={{ 
-                      type: 'spring', 
-                      stiffness: 100, 
-                      damping: 20, 
-                      duration: 1.5,
-                      delay: 0.6 
-                    }}
-                    className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    I
-                  </motion.span>
-                </motion.div>
-              </div>
+                    <div className="absolute inset-0 bg-white/20 rounded-full blur-lg"></div>
+                    <div className="absolute inset-0 rounded-full border border-orange-400/30"></div>
+                  </motion.div>
 
-              {/* Floating Text */}
-              <AnimatePresence>
-                {eiSplit && isTechSectionVisible && (
+                  {/* Enhanced Rotating Rings */}
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ 
-                      duration: 1,
-                      delay: 0.8,
-                      ease: "easeOut"
+                    className="absolute inset-0"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear"
                     }}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
                   >
-                    <div className="bg-white/95 backdrop-blur-sm px-8 py-4 rounded-full shadow-xl">
-                      <span className="text-2xl font-semibold text-gray-800 whitespace-nowrap">
-                        Enable Intelligence
-                      </span>
-                    </div>
+                    {[...Array(3)].map((_, i) => (
+                      <motion.div
+                        key={`ring-${i}`}
+                        className="absolute inset-0 rounded-full border-2 border-orange-400/30"
+                        style={{
+                          transform: `rotate(${i * 60}deg) scale(${1 - i * 0.1})`
+                        }}
+                      />
+                    ))}
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-2 md:px-0">
-            {[
-              { 
-                icon: aiIcon, 
-                label: "AI Transformation", 
-                desc: "We turn raw data into predictive power through advanced machine learning algorithms and neural networks.",
-                gradient: "from-orange-500/20 to-orange-600/20"
-              },
-              { 
-                icon: customizedIcon, 
-                label: "Customized AI Solutions", 
-                desc: "Tailored pipelines designed specifically for your industry's unique challenges and requirements.",
-                gradient: "from-orange-500/20 to-orange-600/20"
-              },
-              { 
-                icon: scalableIcon, 
-                label: "Scalable Solutions", 
-                desc: "Enterprise-grade deployment frameworks that grow with your business needs.",
-                gradient: "from-orange-500/20 to-orange-600/20"
-              },
-            ].map((t, i) => (
-              <motion.div 
-                key={i} 
-                className="group relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 flex flex-col items-center text-center hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.8, delay: 0.2 * i }}
-              >
-                {/* Background Gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-                
-                {/* Content */}
-                <div className="relative z-10">
-                  <motion.div 
-                    className="w-20 h-20 md:w-24 md:h-24 mb-6 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 p-4 transform group-hover:scale-110 transition-transform duration-500"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.8 }}
-                  >
-                    <img src={t.icon} alt={t.label} className="w-full h-full object-contain filter brightness-0 invert" />
-                  </motion.div>
-                  <h3 className="font-bold text-xl md:text-2xl mb-4 text-gray-900">{t.label}</h3>
-                  <p className="text-gray-600 leading-relaxed">{t.desc}</p>
                 </div>
 
-                {/* Hover Effects */}
-                <div className="absolute inset-0 rounded-2xl border-2 border-orange-500/0 group-hover:border-orange-500/20 transition-colors duration-500"></div>
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-orange-500 to-orange-600 group-hover:w-1/2 transition-all duration-500"></div>
-              </motion.div>
-            ))}
-          </div>
+                {/* EI Letters with Enhanced Animation */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.div
+                    className="relative flex items-center justify-center"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={isTechSectionVisible ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
+                    transition={{ duration: 1, delay: 0.4 }}
+                  >
+                    {/* Power Ring Effect */}
+                    <AnimatePresence>
+                      {!eiSplit && isTechSectionVisible && (
+                        <>
+                          {/* Enhanced Outer Power Ring */}
+                          <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1.2, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 z-10"
+                          >
+                            <div className="absolute inset-0 rounded-full border-4 border-orange-400/40 blur-sm"></div>
+                            <div className="absolute inset-0 rounded-full border-2 border-orange-400/60"></div>
+                          </motion.div>
 
-          {/* Additional Info */}
-          <motion.div 
-            className="mt-16 md:mt-24 text-center px-2 md:px-0"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <div className={`inline-block px-8 py-6 rounded-2xl backdrop-blur-sm ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-orange-500/30 to-orange-600/30' 
-                : 'bg-gradient-to-r from-orange-500/20 to-orange-600/20'
-            }`}>
-              <p className={`text-lg md:text-xl max-w-3xl mx-auto ${
-                isDarkMode ? 'text-gray-100' : 'text-gray-800'
-              }`}>
-                Our technology stack is constantly evolving, incorporating the latest advancements in AI and machine learning to deliver cutting-edge solutions.
-              </p>
+                          {/* Enhanced Spark Ring */}
+                          <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ duration: 1 }}
+                            className="absolute inset-0 z-20"
+                          >
+                            {[...Array(48)].map((_, i) => (
+                              <motion.div
+                                key={`power-spark-${i}`}
+                                className="absolute w-1.5 h-1.5 bg-orange-400 rounded-full"
+                                style={{
+                                  left: '50%',
+                                  top: '50%',
+                                  transform: `translate(-50%, -50%) rotate(${i * 7.5}deg)`
+                                }}
+                                animate={{
+                                  scale: [0, 1.5, 0],
+                                  opacity: [0, 1, 0],
+                                  x: [
+                                    Math.cos(i * Math.PI / 24) * 120,
+                                    Math.cos(i * Math.PI / 24) * 100,
+                                    Math.cos(i * Math.PI / 24) * 120
+                                  ],
+                                  y: [
+                                    Math.sin(i * Math.PI / 24) * 120,
+                                    Math.sin(i * Math.PI / 24) * 100,
+                                    Math.sin(i * Math.PI / 24) * 120
+                                  ]
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  delay: i * 0.02,
+                                  ease: "easeInOut"
+                                }}
+                              >
+                                <div className="absolute inset-0 bg-white/80 rounded-full blur-sm"></div>
+                              </motion.div>
+                            ))}
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+
+                    <motion.span
+                      initial={{ x: 0, rotate: 0, opacity: 0 }}
+                      animate={
+                        eiSplit ? { x: -170, rotate: -15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
+                      }
+                      transition={{ 
+                        type: 'spring', 
+                        stiffness: 100, 
+                        damping: 20, 
+                        duration: 1.5,
+                        delay: 0.6 
+                      }}
+                      className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
+                      style={{ fontFamily: 'inherit' }}
+                    >
+                      E
+                    </motion.span>
+                    <motion.span
+                      initial={{ x: 0, rotate: 0, opacity: 0 }}
+                      animate={
+                        eiSplit ? { x: 135, rotate: 15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
+                      }
+                      transition={{ 
+                        type: 'spring', 
+                        stiffness: 100, 
+                        damping: 20, 
+                        duration: 1.5,
+                        delay: 0.6 
+                      }}
+                      className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
+                      style={{ fontFamily: 'inherit' }}
+                    >
+                      I
+                    </motion.span>
+                  </motion.div>
+                </div>
+
+                {/* Enhanced Floating Text */}
+                <AnimatePresence>
+                  {eiSplit && isTechSectionVisible && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ 
+                        duration: 1,
+                        delay: 0.8,
+                        ease: "easeOut"
+                      }}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+                    >
+                      <div className="bg-white/95 backdrop-blur-sm px-8 py-4 rounded-full shadow-xl">
+                        <span className="text-2xl font-semibold text-gray-800 whitespace-nowrap">
+                          Enable Intelligence
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
-          </motion.div>
+
+            {/* Right Side: Features Grid - Adjusted for better content visibility */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {[
+                { 
+                  icon: aiIcon, 
+                  label: "AI Transformation", 
+                  desc: "We turn raw data into predictive power through advanced machine learning algorithms.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                },
+                { 
+                  icon: customizedIcon, 
+                  label: "Customized AI Solutions", 
+                  desc: "Tailored pipelines designed for your industry's unique challenges and requirements.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                },
+                { 
+                  icon: scalableIcon, 
+                  label: "Scalable Solutions", 
+                  desc: "Enterprise-grade deployment frameworks that grow with your business needs.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                },
+                {
+                  icon: aiIcon,
+                  label: "Real-time Analytics",
+                  desc: "Instant insights and decision-making support through powerful data processing.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                }
+              ].map((t, i) => (
+                <motion.div 
+                  key={i} 
+                  className="group relative bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.8, delay: 0.2 * i }}
+                >
+                  {/* Background Gradient */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10 h-full flex flex-col">
+                    <motion.div 
+                      className="w-14 h-14 md:w-16 md:h-16 mb-4 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 p-2 transform group-hover:scale-110 transition-transform duration-500"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.8 }}
+                    >
+                      <img src={t.icon} alt={t.label} className="w-full h-full object-contain filter brightness-0 invert" />
+                    </motion.div>
+                    <h3 className="font-bold text-lg md:text-xl mb-2 text-gray-900">{t.label}</h3>
+                    <p className="text-gray-600 text-base leading-relaxed">{t.desc}</p>
+                  </div>
+
+                  {/* Hover Effects */}
+                  <div className="absolute inset-0 rounded-xl border-2 border-orange-500/0 group-hover:border-orange-500/20 transition-colors duration-500"></div>
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-orange-500 to-orange-600 group-hover:w-1/2 transition-all duration-500"></div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
