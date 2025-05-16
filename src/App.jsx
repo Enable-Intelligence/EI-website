@@ -1143,24 +1143,6 @@ function App() {
               </motion.div>
             ))}
           </div>
-
-          {/* Newsletter Subscription */}
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl p-8 md:p-12 text-white" data-aos="fade-up">
-            <div className="max-w-3xl mx-auto text-center">
-              <h3 className="text-3xl font-bold mb-4">Stay Updated</h3>
-              <p className="text-white/80 mb-8">Subscribe to our newsletter for the latest insights and updates in AI technology</p>
-              <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="flex-1 px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:border-white/40"
-                />
-                <button className="bg-white text-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1">
-                  Subscribe
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -1360,72 +1342,29 @@ function App() {
                 }`}>
                   <span className="flex items-center">
                     <svg className="w-6 h-6 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Quick Contact Info
+                    Stay Updated
                   </span>
                 </h3>
                 <div className="space-y-6">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      isDarkMode ? 'bg-orange-500/20' : 'bg-orange-500/10'
-                    }`}>
-                      <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${
-                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                      }`}>Phone</p>
-                      <p className={`text-lg font-semibold ${
-                        isDarkMode ? 'text-gray-200' : 'text-gray-900'
-                      }`}>+91 82972 11188</p>
-                    </div>
+                  <p className={`text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
+                    Subscribe to our newsletter for the latest insights and updates in AI technology
+                  </p>
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <input 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      className={`flex-1 px-6 py-4 rounded-xl transition-all ${
+                        isDarkMode 
+                          ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
+                          : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
+                      }`}
+                    />
+                    <button className="bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1">
+                      Subscribe
+                    </button>
                   </div>
-
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      isDarkMode ? 'bg-orange-500/20' : 'bg-orange-500/10'
-                    }`}>
-                      <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${
-                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                      }`}>Email</p>
-                      <p className={`text-lg font-semibold ${
-                        isDarkMode ? 'text-gray-200' : 'text-gray-900'
-                      }`}>support@enableintelligence.com</p>
-                    </div>
-                  </div>
-
-                  {/* Office Hours */}
-                  <div className={`p-6 rounded-xl ${
-                    isDarkMode ? 'bg-gray-800' : 'bg-orange-50'
-                  }`}>
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                        isDarkMode ? 'bg-orange-500/30' : 'bg-orange-500/20'
-                      }`}>
-                        <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className={`text-sm font-medium ${
-                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                        }`}>Office Hours</p>
-                        <p className={`text-lg font-semibold ${
-                          isDarkMode ? 'text-gray-200' : 'text-gray-900'
-                        }`}>Mon - Fri: 9:00 AM - 6:00 PM EST</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Social Links */}
                   <div className="flex justify-center space-x-4 pt-4">
                     <a 
                       href="#" 
@@ -1572,96 +1511,160 @@ function App() {
         {isLoading ? (
           <motion.div
             key="loading"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Dynamic Background */}
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-orange-500/5 animate-pulse"></div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent"></div>
-              <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-            </div>
-
-            {/* Floating Particles */}
-            {[...Array(30)].map((_, i) => (
+            {/* Energy Lines from Edges */}
+            {[
+              { from: 'top', rotate: 0, delay: 0.3 },
+              { from: 'right', rotate: 90, delay: 0.4 },
+              { from: 'bottom', rotate: 180, delay: 0.5 },
+              { from: 'left', rotate: 270, delay: 0.6 }
+            ].map((direction, index) => (
               <motion.div
-                key={`particle-${i}`}
-                className="absolute w-2 h-2 bg-orange-500/30 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`
-                }}
-                animate={{
-                  y: [0, -30, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.5, 1]
-                }}
-                transition={{
-                  duration: 2 + Math.random(),
-                  repeat: Infinity,
-                  delay: i * 0.1
-                }}
-              />
+                key={`energy-${index}`}
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: direction.delay }}
+              >
+                {/* Main Energy Line */}
+                <motion.div
+                  className="absolute w-[200%] h-2 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600"
+                  style={{
+                    transform: `rotate(${direction.rotate}deg)`,
+                    transformOrigin: 'center',
+                    opacity: 0.9
+                  }}
+                  initial={{ 
+                    scale: 0,
+                    opacity: 0,
+                    x: direction.from === 'left' ? '-100%' : direction.from === 'right' ? '100%' : 0,
+                    y: direction.from === 'top' ? '-100%' : direction.from === 'bottom' ? '100%' : 0
+                  }}
+                  animate={{
+                    scale: [0, 1],
+                    opacity: [0, 0.9, 0],
+                    x: 0,
+                    y: 0
+                  }}
+                  transition={{
+                    duration: 1.2,
+                    delay: direction.delay,
+                    ease: "easeOut"
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 animate-pulse"></div>
+                </motion.div>
+
+                {/* Energy Particles */}
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={`particle-${index}-${i}`}
+                    className="absolute w-1 h-1 bg-orange-500 rounded-full"
+                    style={{
+                      transform: `rotate(${direction.rotate}deg)`,
+                      transformOrigin: 'center'
+                    }}
+                    initial={{ 
+                      scale: 0,
+                      opacity: 0,
+                      x: direction.from === 'left' ? '-100%' : direction.from === 'right' ? '100%' : 0,
+                      y: direction.from === 'top' ? '-100%' : direction.from === 'bottom' ? '100%' : 0
+                    }}
+                    animate={{
+                      scale: [0, 1.5, 0],
+                      opacity: [0, 0.8, 0],
+                      x: [0, Math.cos(i * 45 * Math.PI / 180) * 100],
+                      y: [0, Math.sin(i * 45 * Math.PI / 180) * 100]
+                    }}
+                    transition={{
+                      duration: 1,
+                      delay: direction.delay + i * 0.1,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-b from-orange-600 via-orange-500 to-orange-600 animate-pulse"></div>
+                  </motion.div>
+                ))}
+              </motion.div>
             ))}
 
-            {/* Main Logo Container */}
-            <div className="relative flex items-center justify-center perspective-[2000px]">
-              {/* Power Core */}
+            {/* Letters Container */}
+            <div className="relative flex items-center justify-center">
+              {/* Initial White EI */}
               <motion.div
-                className="absolute w-96 h-96"
+                className="text-[15rem] font-black text-white relative"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                EI
+              </motion.div>
+
+              {/* Charging Effect */}
+              <motion.div
+                className="absolute inset-0"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.5 }}
+                transition={{ duration: 0.4, delay: 1.2 }}
               >
-                {/* Core Glow */}
-                <div className="absolute inset-0 bg-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
-                
-                {/* Rotating Rings */}
+                {/* Charging Animation */}
                 <motion.div
-                  className="absolute inset-0"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2 }}
                 >
+                  <motion.span
+                    className="text-[15rem] font-black text-orange-500 relative"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 1.2 }}
+                  >
+                    EI
+                  </motion.span>
+                </motion.div>
+
+                {/* Power Core Effect */}
+                <motion.div
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 1.2 }}
+                >
+                  {/* Core Glow */}
+                  <div className="absolute inset-0 bg-orange-500 rounded-full animate-pulse opacity-30 blur-xl"></div>
+                  
+                  {/* Power Rings */}
                   {[...Array(3)].map((_, i) => (
                     <motion.div
                       key={`ring-${i}`}
-                      className="absolute inset-0 rounded-full border-2 border-orange-500/30"
-                      style={{
-                        transform: `scale(${1 - i * 0.15}) rotate(${i * 45}deg)`
+                      className="absolute inset-0 border-2 border-orange-500 rounded-full"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.8, 0.4, 0.8]
+                      }}
+                      transition={{
+                        duration: 2,
+                        delay: 1.2 + i * 0.2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
                       }}
                     />
                   ))}
                 </motion.div>
-              </motion.div>
 
-              {/* EI Text */}
-              <motion.div
-                className="relative"
-                initial={{ scale: 0.5, opacity: 0, rotateY: 45 }}
-                animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-                transition={{ duration: 1.2, delay: 0.8 }}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <motion.div
-                  className="text-[20rem] font-black text-white relative"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 1 }}
-                >
-                  EI
-                  {/* Text Glow */}
-                  <div className="absolute inset-0 bg-orange-500/20 blur-3xl animate-pulse"></div>
-                </motion.div>
-
-                {/* Energy Burst */}
+                {/* Energy Burst Effect */}
                 <motion.div
                   className="absolute inset-0"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 1.5 }}
+                  transition={{ duration: 0.4, delay: 1.5 }}
                 >
                   {[...Array(24)].map((_, i) => (
                     <motion.div
@@ -1672,18 +1675,19 @@ function App() {
                         top: '50%',
                         transform: `translate(-50%, -50%) rotate(${i * 15}deg)`
                       }}
+                      initial={{ scale: 0, opacity: 0 }}
                       animate={{
                         scale: [0, 2, 0],
                         opacity: [0, 1, 0],
                         x: [
                           0,
-                          Math.cos(i * Math.PI / 12) * 300,
-                          Math.cos(i * Math.PI / 12) * 400
+                          Math.cos(i * Math.PI / 12) * 200,
+                          Math.cos(i * Math.PI / 12) * 300
                         ],
                         y: [
                           0,
-                          Math.sin(i * Math.PI / 12) * 300,
-                          Math.sin(i * Math.PI / 12) * 400
+                          Math.sin(i * Math.PI / 12) * 200,
+                          Math.sin(i * Math.PI / 12) * 300
                         ]
                       }}
                       transition={{
@@ -1701,7 +1705,7 @@ function App() {
                 {[...Array(8)].map((_, i) => (
                   <motion.div
                     key={`electric-${i}`}
-                    className="absolute w-1 h-48 bg-gradient-to-b from-orange-500 to-transparent"
+                    className="absolute w-1 h-32 bg-gradient-to-b from-orange-500 to-transparent"
                     style={{
                       left: '50%',
                       top: '50%',
@@ -1723,21 +1727,6 @@ function App() {
                 ))}
               </motion.div>
             </div>
-
-            {/* Loading Progress */}
-            <motion.div
-              className="absolute bottom-20 left-1/2 -translate-x-1/2 w-64 h-1 bg-gray-800 rounded-full overflow-hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <motion.div
-                className="h-full bg-orange-500"
-                initial={{ width: "0%" }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 2, ease: "easeInOut" }}
-              />
-            </motion.div>
           </motion.div>
         ) : (
           <motion.div
