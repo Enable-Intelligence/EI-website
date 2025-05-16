@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import AOS from "aos";
@@ -50,10 +50,14 @@ const contactFormInputStyles = {
 function App() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [ setCurrentSection] = useState("home");
-  const [eiSplit, setEiSplit] = useState(false);
+  const [eiSplit, setEiSplit] = useState(true); // Initialize as true for initial split
   const [isTechSectionVisible, setIsTechSectionVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [scrollDirection, setScrollDirection] = useState("up");
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const techSectionRef = useRef(null);
+  const [techSectionScrollProgress, setTechSectionScrollProgress] = useState(0);
 
   // Loading effect
   useEffect(() => {
@@ -74,10 +78,13 @@ function App() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsTechSectionVisible(true);
-          setEiSplit(true);
+          setEiSplit(true); // Split when entering the section
         } else {
           setIsTechSectionVisible(false);
-          setEiSplit(false);
+          // Close only if scrolling down
+          if (scrollDirection === "down") {
+            setEiSplit(false);
+          }
         }
       },
       { threshold: 0.3 }
@@ -86,7 +93,7 @@ function App() {
     const techSection = document.getElementById("technology");
     if (techSection) observer.observe(techSection);
     return () => techSection && observer.unobserve(techSection);
-  }, []);
+  }, [scrollDirection]); // Add scrollDirection as a dependency
 
   // update currentSection based on scroll position
   useEffect(() => {
@@ -108,6 +115,41 @@ function App() {
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
   }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY) {
+        setScrollDirection("down");
+      } else if (currentScrollY < lastScrollY) {
+        setScrollDirection("up");
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (techSectionRef.current) {
+        const { top, height } = techSectionRef.current.getBoundingClientRect();
+        const progress = Math.min(1, Math.max(0, (window.innerHeight - top) / height));
+        setTechSectionScrollProgress(progress);
+
+        // Combine letters when scrolled past 50% of the section
+        if (progress > 0.5) {
+          setEiSplit(false);
+        } else {
+          setEiSplit(true);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { id: "home", label: "Home" },
@@ -457,19 +499,31 @@ function App() {
               >
                 {/* Card Content */}
                 <div className="relative z-10">
-                  <h4 className="text-2xl font-bold text-orange-500 mb-4">{s.title}</h4>
+                  <h4 className="text-2xl font-bold text-orange-500 mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">{s.title}</h4>
                   <div className="relative h-48 mb-6">
                     <img 
                       src={s.img} 
                       alt={s.title} 
-                      className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300" 
+                      className="w-full h-full object-contain group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
                 </div>
 
-                {/* Hover Effect Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-orange-600/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* Hover Reveal Overlay */}
+                <div className="absolute inset-0 bg-orange-500/90 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20">
+                  <motion.p 
+                    className="text-white text-sm"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.5,
+                      delay: 0.2,
+                      ease: "easeOut"
+                    }}
+                  >
+                    {s.description}
+                  </motion.p>
+                </div>
               </div>
             ))}
           </div>
@@ -477,7 +531,7 @@ function App() {
       </section>
 
       {/* TECHNOLOGY SECTION */}
-      <section id="technology" className={`relative ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-8 md:py-24 px-2 md:px-16 overflow-hidden w-full`}>
+      <section id="technology" className={`relative ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-8 md:py-24 px-2 md:px-16 overflow-hidden w-full`} ref={techSectionRef}>
         {/* Modern Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
@@ -834,9 +888,8 @@ function App() {
 
                   <motion.span
                     initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={isTechSectionVisible ? 
-                      (eiSplit ? { x: -170, rotate: -15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }) : 
-                      { x: 0, rotate: 0, opacity: 0 }
+                    animate={
+                      eiSplit ? { x: -170, rotate: -15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
                     }
                     transition={{ 
                       type: 'spring', 
@@ -852,9 +905,8 @@ function App() {
                   </motion.span>
                   <motion.span
                     initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={isTechSectionVisible ? 
-                      (eiSplit ? { x: 135, rotate: 15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }) : 
-                      { x: 0, rotate: 0, opacity: 0 }
+                    animate={
+                      eiSplit ? { x: 135, rotate: 15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
                     }
                     transition={{ 
                       type: 'spring', 
@@ -894,14 +946,6 @@ function App() {
                 )}
               </AnimatePresence>
             </div>
-            <motion.span 
-              className="text-xs md:text-sm text-gray-500 mt-2 md:mt-4 text-center"
-              initial={{ opacity: 0 }}
-              animate={isTechSectionVisible ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 1, delay: 1 }}
-            >
-              Click to explore our technology
-            </motion.span>
           </div>
 
           {/* Enhanced Features Grid - Mobile Optimized */}
