@@ -301,7 +301,7 @@ function App() {
       </nav>
 
       {/* HOME SECTION */}
-      <section id="home" className={`pt-16 min-h-screen flex flex-col lg:flex-row overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative`}>
+      <section id="home" className={`h-screen flex flex-col lg:flex-row overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative`}>
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full">
@@ -318,10 +318,10 @@ function App() {
         </div>
 
         {/* Left Content */}
-        <div className="flex-1 p-8 md:p-16 flex flex-col justify-center relative z-10">
+        <div className="flex-1 p-4 md:p-8 flex flex-col justify-center relative z-10">
           {/* Logo and Content */}
           <div className="relative">
-            <div className="flex justify-center items-center h-40 mb-8 relative">
+            <div className="flex justify-center items-center h-36 mb-6 relative">
               <motion.img
                 src={logo}
                 alt="Enable Intelligence Logo"
@@ -340,12 +340,12 @@ function App() {
               <div className="absolute inset-0 bg-orange-500/20 rounded-full blur-2xl animate-pulse"></div>
             </div>
 
-            <div className="space-y-12 max-w-4xl mx-auto">
+            <div className="space-y-8 max-w-4xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-center space-y-4"
+                className="text-center space-y-3"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
                   <span className="text-orange-500 relative inline-block">
@@ -357,14 +357,14 @@ function App() {
                       transition={{ duration: 1, delay: 0.5 }}
                     />
                   </span>
-                  <div className="mt-4">
-                    <span className={`${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Where AI Meets Innovation</span>
+                  <div className="mt-3">
+                    <span className={`text-2xl md:text-3xl ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Where AI Meets Innovation</span>
                   </div>
                 </h1>
               </motion.div>
 
               <motion.div 
-                className={`text-center space-y-6 ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}
+                className={`text-center space-y-5 ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -372,24 +372,24 @@ function App() {
                 <p className="text-xl md:text-2xl font-bold text-orange-500">
                   Empowering Industries with Next-Generation Adaptive AI
                 </p>
-                <div className="space-y-4 text-lg md:text-xl leading-relaxed">
+                <div className="space-y-3 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
                   <p>
                     At Enable Intelligence, we are revolutionizing the future of business through cutting-edge artificial intelligence solutions.
                   </p>
                   <p>
-                    We help organizations transform, innovate, and thrive in a rapidly evolving digital landscape by bridging the gap between technology and human potential.
+                    We help organizations transform, innovate, and thrive in a rapidly evolving digital landscape.
                   </p>
                 </div>
               </motion.div>
 
               <motion.div 
-                className="flex flex-wrap justify-center gap-6 pt-8"
+                className="flex flex-wrap justify-center gap-6 pt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <button 
-                  className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden min-w-[200px]" 
+                  className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden min-w-[200px] text-lg" 
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <span className="relative z-10 group-hover:text-black">Get Started</span>
@@ -397,7 +397,7 @@ function App() {
                   <div className="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </button>
                 <button 
-                  className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden min-w-[200px]" 
+                  className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden min-w-[200px] text-lg" 
                   onClick={() => document.getElementById('technology')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <span className="relative z-10 group-hover:text-black">Learn More</span>
@@ -410,7 +410,7 @@ function App() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="flex-1 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
           {/* Animated Background */}
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent"></div>
