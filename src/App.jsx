@@ -49,15 +49,26 @@ const contactFormInputStyles = {
 
 function App() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [ setCurrentSection] = useState("home");
-  const [eiSplit, setEiSplit] = useState(true); // Initialize as true for initial split
+  const [setCurrentSection] = useState("home");
+  const [eiSplit, setEiSplit] = useState(true);
   const [isTechSectionVisible, setIsTechSectionVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollDirection, setScrollDirection] = useState("up");
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const techSectionRef = useRef(null);
   const [techSectionScrollProgress, setTechSectionScrollProgress] = useState(0);
+  const [activeCard, setActiveCard] = useState(null);
+
+  // Add window resize listener
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Loading effect
   useEffect(() => {
@@ -356,7 +367,8 @@ function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                We're a forward‑thinking, AI‑driven organization born from a vision to reimagine how industries operate. At Enable Intelligence, we don't just develop AI—we enable intelligence.
+                Empowering Industries with Next-Generation Adaptive AI
+                At Enable Intelligence, we are revolutionizing the future of business through cutting-edge artificial intelligence solutions. Our mission is to unlock the full potential of adaptive AI by seamlessly integrating advanced technologies with human insight. From manufacturing and healthcare to finance and beyond, we help organizations transform, innovate, and thrive in a rapidly evolving digital landscape. By bridging the gap between technology and human potential, we empower industries to make smarter decisions, automate complex processes, and create meaningful impact at scale.
               </motion.p>
 
               <motion.div 
@@ -407,28 +419,63 @@ function App() {
                   <motion.span 
                     className="text-black inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [-5, 5, -5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Empowering
                   </motion.span><br />
                   <motion.span 
                     className="text-white inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [5, -5, 5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 0.5
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Decisions.
                   </motion.span><br />
                   <motion.span 
                     className="text-black inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [-5, 5, -5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Enabling
                   </motion.span><br />
                   <motion.span 
                     className="text-white inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [5, -5, 5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1.5
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Insight.
                   </motion.span>
@@ -471,7 +518,7 @@ function App() {
               { 
                 title: "SPORTIFY IQ", 
                 img: solution2,
-                description: "Transforming sports analytics with cutting-edge AI technology. From performance tracking to predictive analytics, we help teams and athletes achieve their peak potential through data-driven insights.",
+                description: "Sportify is a comprehensive mobile application designed to support athletes and active individuals in their physical therapy and rehabilitation journeys. Whether you're recovering from an injury or aiming to enhance your performance, Sportify offers a suite of tools to assist you.",
                 features: [
                   "Performance Analytics",
                   "Injury Prevention",
@@ -482,7 +529,7 @@ function App() {
               { 
                 title: "AESTHETIC AI", 
                 img: solution3,
-                description: "Redefining aesthetic procedures with AI-driven analysis and recommendations. Our platform provides personalized treatment plans and outcome predictions for enhanced aesthetic results.",
+                description: "Aesthetics AI is an innovative application that leverages artificial intelligence to help users enhance their visual presence—whether it's personal style, interior design, branding, or digital content. By combining cutting-edge AI with principles of aesthetics, the app offers smart, tailored suggestions that elevate the look and feel of whatever you're working on.",
                 features: [
                   "Treatment Planning",
                   "Outcome Prediction",
@@ -493,36 +540,62 @@ function App() {
             ].map((s, i) => (
               <div 
                 key={i} 
-                className="group relative bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-2xl transition-all duration-300" 
+                className="group relative bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 text-center hover:shadow-2xl transition-all duration-300 overflow-hidden" 
                 data-aos="zoom-in" 
                 data-aos-delay={i * 100}
+                onClick={() => {
+                  if (window.innerWidth < 768) {
+                    setActiveCard(activeCard === i ? null : i);
+                  }
+                }}
               >
-                {/* Card Content */}
+                {/* Animated Background */}
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-xl animate-pulse"></div>
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
+                </div>
+
+                {/* Content Container */}
                 <div className="relative z-10">
-                  <h4 className="text-2xl font-bold text-orange-500 mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">{s.title}</h4>
+                  <h4 className={`text-2xl font-bold text-orange-500 mb-4 transition-all duration-300 ${
+                    activeCard === i ? 'opacity-0' : 'opacity-100'
+                  }`}>{s.title}</h4>
                   <div className="relative h-48 mb-6">
                     <img 
                       src={s.img} 
                       alt={s.title} 
-                      className="w-full h-full object-contain group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" 
+                      className={`w-full h-full object-contain transition-all duration-300 ${
+                        activeCard === i ? 'opacity-0' : 'opacity-100'
+                      }`}
                     />
+                  </div>
+                  {/* Hover/Tap Reveal Overlay */}
+                  <div 
+                    className={`absolute inset-0 bg-orange-500/90 rounded-xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20 ${
+                      activeCard === i ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                    }`}
+                  >
+                    <motion.p 
+                      className="text-white text-sm"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={activeCard === i ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ 
+                        duration: 0.5,
+                        delay: 0.2,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {s.description}
+                    </motion.p>
                   </div>
                 </div>
 
-                {/* Hover Reveal Overlay */}
-                <div className="absolute inset-0 bg-orange-500/90 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20">
-                  <motion.p 
-                    className="text-white text-sm"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ 
-                      duration: 0.5,
-                      delay: 0.2,
-                      ease: "easeOut"
-                    }}
-                  >
-                    {s.description}
-                  </motion.p>
+                {/* Mobile Touch Indicator */}
+                <div className="absolute bottom-2 right-2 md:hidden">
+                  <span className="text-xs text-gray-400">
+                    {activeCard === i ? 'Tap to close' : 'Tap to view details'}
+                  </span>
                 </div>
               </div>
             ))}
@@ -531,1217 +604,342 @@ function App() {
       </section>
 
       {/* TECHNOLOGY SECTION */}
-      <section id="technology" className={`relative ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-8 md:py-24 px-2 md:px-16 overflow-hidden w-full`} ref={techSectionRef}>
-        {/* Modern Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
-        {/* Decorative Left Side Design - Hidden on Mobile */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-96 h-[600px] opacity-60 hidden md:block">
-          <div className="relative w-full h-full">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent"></div>
-            
-            {/* Rotating Hexagons */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={`left-hex-${i}`}
-                  className="absolute inset-0 border-2 border-orange-400/20"
-                  style={{
-                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                    transform: `scale(${1 - i * 0.15}) rotate(${i * 45}deg)`
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Floating Particles */}
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={`left-particle-${i}`}
-                className="absolute w-2 h-2 bg-orange-400/30 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`
-                }}
-                animate={{
-                  y: [0, -30, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.5, 1]
-                }}
-                transition={{
-                  duration: 2 + Math.random(),
-                  repeat: Infinity,
-                  delay: i * 0.1
-                }}
-              />
-            ))}
-
-            {/* Energy Lines */}
-            {[...Array(8)].map((_, i) => (
-              <motion.div
-                key={`left-line-${i}`}
-                className="absolute h-1 bg-gradient-to-r from-orange-400/20 to-transparent"
-                style={{
-                  left: '0',
-                  top: `${i * 12}%`,
-                  width: '100%',
-                  transform: `rotate(${i * 5}deg)`
-                }}
-                animate={{
-                  opacity: [0.2, 0.5, 0.2],
-                  scaleX: [0.8, 1.2, 0.8]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.2
-                }}
-              />
-            ))}
+      <section id="technology" ref={techSectionRef} className={`py-16 px-4 md:px-16 ${isDarkMode ? 'bg-gray-900' : 'bg-white'} relative overflow-hidden`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <h2 className="text-4xl font-extrabold text-orange-500 mb-4 md:mb-0">Technology</h2>
+            <h3 className="text-3xl font-extrabold text-gray-900 text-center md:text-right">
+              Powering Innovation with <span className="text-orange-500">Advanced AI</span>
+            </h3>
           </div>
-        </div>
-
-        {/* Decorative Right Side Design - Hidden on Mobile */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-[600px] opacity-60 hidden md:block">
-          <div className="relative w-full h-full">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-l from-orange-500/5 to-transparent"></div>
-            
-            {/* Rotating Circles */}
+          
+          {/* EI Animation */}
+          <div className="relative h-64 flex items-center justify-center mb-16">
             <motion.div
-              className="absolute inset-0"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={`right-circle-${i}`}
-                  className="absolute inset-0 rounded-full border-2 border-orange-400/20"
-                  style={{
-                    transform: `scale(${1 - i * 0.15}) rotate(${i * 30}deg)`
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Floating Energy Orbs */}
-            {[...Array(15)].map((_, i) => (
-              <motion.div
-                key={`right-orb-${i}`}
-                className="absolute w-3 h-3 bg-orange-400/30 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.2, 1],
-                  x: [0, Math.random() * 20 - 10, 0]
-                }}
-                transition={{
-                  duration: 2 + Math.random(),
-                  repeat: Infinity,
-                  delay: i * 0.1
-                }}
-              >
-                <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
-              </motion.div>
-            ))}
-
-            {/* Energy Waves */}
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={`right-wave-${i}`}
-                className="absolute h-1 bg-gradient-to-l from-orange-400/20 to-transparent"
-                style={{
-                  right: '0',
-                  top: `${i * 15}%`,
-                  width: '100%',
-                  transform: `rotate(${i * -5}deg)`
-                }}
-                animate={{
-                  opacity: [0.2, 0.5, 0.2],
-                  scaleX: [0.8, 1.2, 0.8]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.2
-                }}
-              />
-            ))}
-
-            {/* Pulsing Core */}
-            <motion.div
-              className="absolute top-1/2 right-1/2 w-32 h-32 -translate-y-1/2 translate-x-1/2"
-              animate={{
+              className="text-8xl font-black relative"
+              animate={isTechSectionVisible ? {
                 scale: [1, 1.1, 1],
-                opacity: [0.3, 0.5, 0.3]
-              }}
+                opacity: [0.5, 1, 0.5]
+              } : {}}
               transition={{
-                duration: 3,
+                duration: 2,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
             >
-              <div className="absolute inset-0 bg-orange-400/20 rounded-full blur-xl"></div>
-              <div className="absolute inset-4 bg-orange-400/30 rounded-full blur-lg"></div>
-              <div className="absolute inset-8 bg-orange-400/40 rounded-full"></div>
+              <span className={`${eiSplit ? 'inline-block' : 'hidden'}`}>
+                <motion.span
+                  className="text-orange-500"
+                  animate={isTechSectionVisible ? {
+                    x: [-20, 0, -20],
+                    opacity: [0.5, 1, 0.5]
+                  } : {}}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  E
+                </motion.span>
+                <motion.span
+                  className="text-orange-500"
+                  animate={isTechSectionVisible ? {
+                    x: [20, 0, 20],
+                    opacity: [0.5, 1, 0.5]
+                  } : {}}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.2
+                  }}
+                >
+                  I
+                </motion.span>
+              </span>
+              <span className={`${!eiSplit ? 'inline-block' : 'hidden'} text-orange-500`}>EI</span>
             </motion.div>
-          </div>
-        </div>
-
-        <div className="w-full max-w-7xl mx-auto relative">
-          {/* Modern Section Header - Mobile Optimized */}
-          <div className="flex flex-col items-center text-center mb-8 md:mb-20 px-2 md:px-0" data-aos="fade-up" data-aos-duration="1000">
-            <div className="inline-block bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-4 md:px-8 py-2 md:py-4 rounded-full mb-4 md:mb-6">
-              <h2 className="text-2xl md:text-5xl font-black text-orange-500">Technology</h2>
-            </div>
-            <p className={`text-sm md:text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} max-w-3xl mx-auto leading-relaxed`}>
-              At the core of our platform lies a fusion of industry‑grade LLMs, optimized inference pipelines, and proprietary deployment frameworks.
-            </p>
-          </div>
-
-          {/* Modern Animation - Mobile Optimized */}
-          <div className="flex flex-col items-center justify-center mb-8 md:mb-24 px-2 md:px-0">
-            <div 
-              className="relative w-56 h-56 md:w-96 md:h-96 cursor-pointer select-none group"
-              onClick={() => setEiSplit((v) => !v)}
-            >
-              {/* Main Circle */}
-              <div className="absolute inset-0">
-                {/* Outer Circle */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-300/20 to-orange-400/20"
-                  animate={{
-                    scale: [1, 1.02, 1],
-                    opacity: [0.8, 1, 0.8]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/10 rounded-full blur-xl"></div>
-                </motion.div>
-
-                {/* Inner Circle */}
-                <motion.div
-                  className="absolute inset-8 rounded-full bg-gradient-to-br from-orange-300/10 to-orange-400/10"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                    opacity: [0.6, 0.8, 0.6]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/10 rounded-full blur-lg"></div>
-                </motion.div>
-
-                {/* Rotating Rings */}
-                <motion.div
-                  className="absolute inset-0"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                >
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={`ring-${i}`}
-                      className="absolute inset-0 rounded-full border-2 border-orange-400/20"
-                      style={{
-                        transform: `rotate(${i * 60}deg) scale(${1 - i * 0.1})`
-                      }}
-                    />
-                  ))}
-                </motion.div>
+            
+            {/* Decorative Elements */}
+            <div className="absolute inset-0 pointer-events-none">
+              {/* Left Side Design */}
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-32 h-32">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-xl"></div>
+                <div className="absolute inset-4 bg-gradient-to-br from-orange-500/30 to-transparent rounded-full blur-lg"></div>
+                <div className="absolute inset-8 bg-gradient-to-br from-orange-500/40 to-transparent rounded-full"></div>
               </div>
-
-              {/* EI Letters */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  className="relative flex items-center justify-center"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={isTechSectionVisible ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
-                  transition={{ duration: 1, delay: 0.4 }}
-                >
-                  {/* Power Ring Effect */}
-                  <AnimatePresence>
-                    {!eiSplit && isTechSectionVisible && (
-                      <>
-                        {/* Outer Power Ring */}
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1.2, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-10"
-                        >
-                          <div className="absolute inset-0 rounded-full border-4 border-orange-400/30 blur-sm"></div>
-                          <div className="absolute inset-0 rounded-full border-2 border-orange-400/50"></div>
-                        </motion.div>
-
-                        {/* Spark Ring */}
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-20"
-                        >
-                          {[...Array(48)].map((_, i) => (
-                            <motion.div
-                              key={`power-spark-${i}`}
-                              className="absolute w-1.5 h-1.5 bg-orange-400 rounded-full"
-                              style={{
-                                left: '50%',
-                                top: '50%',
-                                transform: `translate(-50%, -50%) rotate(${i * 7.5}deg)`
-                              }}
-                              animate={{
-                                scale: [0, 1.5, 0],
-                                opacity: [0, 1, 0],
-                                x: [
-                                  Math.cos(i * Math.PI / 24) * 120,
-                                  Math.cos(i * Math.PI / 24) * 100,
-                                  Math.cos(i * Math.PI / 24) * 120
-                                ],
-                                y: [
-                                  Math.sin(i * Math.PI / 24) * 120,
-                                  Math.sin(i * Math.PI / 24) * 100,
-                                  Math.sin(i * Math.PI / 24) * 120
-                                ]
-                              }}
-                              transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                delay: i * 0.02,
-                                ease: "easeInOut"
-                              }}
-                            >
-                              <div className="absolute inset-0 bg-white/80 rounded-full blur-sm"></div>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-
-                        {/* Energy Burst */}
-                        <motion.div
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-10"
-                        >
-                          {[...Array(24)].map((_, i) => (
-                            <motion.div
-                              key={`energy-burst-${i}`}
-                              className="absolute w-1 h-1 bg-orange-400 rounded-full"
-                              style={{
-                                left: '50%',
-                                top: '50%',
-                                transform: `translate(-50%, -50%) rotate(${i * 15}deg)`
-                              }}
-                              animate={{
-                                scale: [0, 2, 0],
-                                opacity: [0, 1, 0],
-                                x: [
-                                  0,
-                                  Math.cos(i * Math.PI / 12) * 80,
-                                  Math.cos(i * Math.PI / 12) * 120
-                                ],
-                                y: [
-                                  0,
-                                  Math.sin(i * Math.PI / 12) * 80,
-                                  Math.sin(i * Math.PI / 12) * 120
-                                ]
-                              }}
-                              transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                                delay: i * 0.05,
-                                ease: "easeOut"
-                              }}
-                            >
-                              <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      </>
-                    )}
-                  </AnimatePresence>
-
-                  <motion.span
-                    initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={
-                      eiSplit ? { x: -170, rotate: -15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
-                    }
-                    transition={{ 
-                      type: 'spring', 
-                      stiffness: 100, 
-                      damping: 20, 
-                      duration: 1.5,
-                      delay: 0.6 
-                    }}
-                    className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    E
-                  </motion.span>
-                  <motion.span
-                    initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={
-                      eiSplit ? { x: 135, rotate: 15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
-                    }
-                    transition={{ 
-                      type: 'spring', 
-                      stiffness: 100, 
-                      damping: 20, 
-                      duration: 1.5,
-                      delay: 0.6 
-                    }}
-                    className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    I
-                  </motion.span>
-                </motion.div>
+              
+              {/* Right Side Design */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-32 h-32">
+                <div className="absolute inset-0 bg-gradient-to-bl from-orange-500/20 to-transparent rounded-full blur-xl"></div>
+                <div className="absolute inset-4 bg-gradient-to-bl from-orange-500/30 to-transparent rounded-full blur-lg"></div>
+                <div className="absolute inset-8 bg-gradient-to-bl from-orange-500/40 to-transparent rounded-full"></div>
               </div>
-
-              {/* Floating Text */}
-              <AnimatePresence>
-                {eiSplit && isTechSectionVisible && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ 
-                      duration: 1,
-                      delay: 0.8,
-                      ease: "easeOut"
-                    }}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
-                  >
-                    <div className="bg-white/95 backdrop-blur-sm px-8 py-4 rounded-full shadow-xl">
-                      <span className="text-2xl font-semibold text-gray-800 whitespace-nowrap">
-                        Enable Intelligence
-                      </span>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           </div>
 
-          {/* Enhanced Features Grid - Mobile Optimized */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 px-2 md:px-0">
+          {/* Technology Features */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { 
-                icon: aiIcon, 
-                label: "AI Transformation", 
-                desc: "We turn raw data into predictive power through advanced machine learning algorithms and neural networks.",
-                gradient: "from-orange-500/10 to-orange-600/10"
+              {
+                icon: aiIcon,
+                title: "AI Transformation",
+                description: "Leverage cutting-edge artificial intelligence to transform your business processes and decision-making capabilities."
               },
-              { 
-                icon: customizedIcon, 
-                label: "Customized AI Solutions", 
-                desc: "Tailored pipelines designed specifically for your industry's unique challenges and requirements.",
-                gradient: "from-orange-500/10 to-orange-600/10"
+              {
+                icon: customizedIcon,
+                title: "Customized Solutions",
+                description: "Tailored AI solutions designed to meet your specific business needs and industry requirements."
               },
-              { 
-                icon: scalableIcon, 
-                label: "Scalable Solutions", 
-                desc: "Enterprise-grade deployment frameworks that grow with your business needs.",
-                gradient: "from-orange-500/10 to-orange-600/10"
-              },
-            ].map((t, i) => (
-              <motion.div 
-                key={i} 
-                className="group relative bg-white rounded-xl md:rounded-3xl shadow-xl p-4 md:p-8 flex flex-col items-center text-center hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.8, delay: 0.2 * i }}
+              {
+                icon: scalableIcon,
+                title: "Scalable Architecture",
+                description: "Built on a robust, scalable architecture that grows with your business needs."
+              }
+            ].map((feature, i) => (
+              <div 
+                key={i}
+                className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
               >
-                {/* Enhanced Background Gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} rounded-xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
-                
-                {/* Enhanced Content */}
-                <div className="relative z-10">
-                  <div className="w-14 h-14 md:w-24 md:h-24 mb-4 md:mb-8 rounded-lg md:rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 p-3 md:p-6 transform group-hover:scale-110 transition-transform duration-700">
-                    <img src={t.icon} alt={t.label} className="w-full h-full object-contain filter brightness-0 invert" />
-                  </div>
-                  <h3 className="font-bold text-lg md:text-2xl mb-2 md:mb-4 text-gray-900">{t.label}</h3>
-                  <p className="text-xs md:text-base text-gray-600 leading-relaxed">{t.desc}</p>
-                </div>
-
-                {/* Enhanced Hover Effect Line */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-0 group-hover:w-1/2 group-hover:opacity-100 transition-all duration-700"></div>
-              </motion.div>
+                <img src={feature.icon} alt={feature.title} className="w-16 h-16 mb-4" />
+                <h4 className="text-xl font-bold text-orange-500 mb-2">{feature.title}</h4>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
             ))}
           </div>
-
-          {/* Enhanced Additional Info - Mobile Optimized */}
-          <motion.div 
-            className="mt-8 md:mt-20 text-center px-2 md:px-0"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <div className={`inline-block px-4 md:px-8 py-2 md:py-4 rounded-full ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-orange-500/40 to-orange-600/40' 
-                : 'bg-gradient-to-r from-orange-500/20 to-orange-600/20'
-            }`}>
-              <p className={`text-sm md:text-lg max-w-3xl mx-auto ${
-                isDarkMode ? 'text-gray-100' : 'text-gray-800'
-              }`}>
-                Our technology stack is constantly evolving, incorporating the latest advancements in AI and machine learning to deliver cutting-edge solutions.
-              </p>
-            </div>
-          </motion.div>
         </div>
       </section>
 
       {/* RESOURCES SECTION */}
-      <section id="resources" className={`${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-24 px-4 md:px-16 relative overflow-hidden`}>
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative">
-          {/* Section Header */}
-          <div className="text-center mb-16" data-aos="fade-up">
-            <div className="inline-block bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-8 py-4 rounded-full mb-6">
-              <h2 className="text-5xl font-black text-orange-500">Resources</h2>
-            </div>
-            <p className={`text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} max-w-3xl mx-auto`}>
-              Discover insights, guides, and innovations shaping the future of AI
-            </p>
+      <section id="resources" className={`py-16 px-4 md:px-16 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <h2 className="text-4xl font-extrabold text-orange-500 mb-4 md:mb-0">Resources</h2>
+            <h3 className="text-3xl font-extrabold text-gray-900 text-center md:text-right">
+              Knowledge Hub for <span className="text-orange-500">AI Excellence</span>
+            </h3>
           </div>
-
-          {/* Featured Resource */}
-          <div className="relative mb-16" data-aos="fade-up">
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="relative h-96 group">
-                  <img src={resourceImg} alt="Featured Resource" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 p-8 text-white">
-                    <span className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold inline-flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                      </svg>
-                      Featured Article
-                    </span>
-                    <h3 className="text-3xl font-bold mt-4">World Refugee Day 2030</h3>
-                    <p className="text-gray-200 mt-2">Exploring the intersection of AI and humanitarian efforts</p>
-                  </div>
-                </div>
-                <div className="p-8 flex flex-col justify-center">
-                  <div className="space-y-6">
-                    <p className="text-gray-600 text-lg leading-relaxed">
-                      Join us in exploring how artificial intelligence is revolutionizing humanitarian aid and refugee support. Discover innovative solutions and real-world applications that are making a difference.
-                    </p>
-                    <div className="flex flex-wrap gap-4">
-                      <button className="bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1 flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        Read Article
-                      </button>
-                      <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Download PDF
-                      </button>
-                    </div>
-                  </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="relative rounded-xl overflow-hidden shadow-lg" data-aos="fade-right">
+              <img src={resourceImg} alt="AI Resources" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                <div>
+                  <h4 className="text-2xl font-bold text-white mb-2">AI Insights Blog</h4>
+                  <p className="text-gray-200 mb-4">Stay updated with the latest trends and insights in artificial intelligence.</p>
+                  <button className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Read More
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Resource Categories */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                title: "AI in Healthcare",
-                desc: "Exploring the future of medical diagnostics",
-                tag: "Healthcare",
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                  </svg>
-                )
-              },
-              {
-                title: "Machine Learning Basics",
-                desc: "A comprehensive guide for beginners",
-                tag: "Education",
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                )
-              },
-              {
-                title: "Data Privacy",
-                desc: "Best practices for secure AI implementation",
-                tag: "Security",
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                )
-              }
-            ].map((r, i) => (
-              <motion.div
-                key={i}
-                className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
-                data-aos="fade-up"
-                data-aos-delay={i * 100}
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="bg-orange-500/10 p-3 rounded-xl text-orange-500">
-                    {r.icon}
-                  </div>
-                  <div className="flex-1">
-                    <span className="inline-block bg-orange-500/10 text-orange-500 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                      {r.tag}
-                    </span>
-                    <h4 className="text-xl font-bold text-gray-900 mb-3">{r.title}</h4>
-                    <p className="text-gray-600 mb-6">{r.desc}</p>
-                    <div className="flex items-center justify-between">
-                      <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                        Read Article
-                      </button>
-                      <span className="text-gray-400 text-sm">5 min read</span>
-                    </div>
-                  </div>
+            
+            <div className="space-y-6" data-aos="fade-left">
+              {[
+                {
+                  title: "Case Studies",
+                  description: "Explore real-world applications of our AI solutions across various industries."
+                },
+                {
+                  title: "White Papers",
+                  description: "In-depth analysis and research on AI implementation and best practices."
+                },
+                {
+                  title: "Webinars",
+                  description: "Join our expert-led sessions on AI transformation and digital innovation."
+                }
+              ].map((resource, i) => (
+                <div key={i} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <h4 className="text-xl font-bold text-orange-500 mb-2">{resource.title}</h4>
+                  <p className="text-gray-600 mb-4">{resource.description}</p>
+                  <button className="text-orange-500 hover:text-orange-600 font-semibold">
+                    Learn More →
+                  </button>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* FAQS SECTION */}
-      <section id="faqs" className={`${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-orange-500 to-orange-600'} py-24 px-4 md:px-16 relative text-white overflow-hidden`}>
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative">
-          {/* Section Header */}
-          <div className="text-center mb-16" data-aos="fade-up">
-            <div className="inline-block bg-white/10 backdrop-blur-sm px-8 py-4 rounded-full mb-6">
-              <h2 className="text-5xl font-black">Frequently Asked Questions</h2>
-            </div>
-            <p className="text-xl text-white/80 max-w-3xl mx-auto">
-              Find answers to common questions about our services and technology
-            </p>
+      <section id="faqs" className={`py-16 px-4 md:px-16 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <h2 className="text-4xl font-extrabold text-orange-500 mb-4 md:mb-0">FAQs</h2>
+            <h3 className="text-3xl font-extrabold text-gray-900 text-center md:text-right">
+              Common Questions About <span className="text-orange-500">Our Solutions</span>
+            </h3>
           </div>
-
-          {/* FAQ Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-6" data-aos="fade-right">
-              {[
-                {
-                  q: "What is SPOCARE?",
-                  a: "SPOCARE is our advanced hospital AI platform that revolutionizes diagnostics through machine learning and predictive analytics."
-                },
-                {
-                  q: "Is my data secure?",
-                  a: "Yes, we implement end-to-end encryption and maintain HIPAA compliance to ensure your data remains protected at all times."
-                },
-                {
-                  q: "Can I export reports?",
-                  a: "Absolutely! You can export reports in multiple formats including PDF and CSV, with customizable templates available."
-                }
-              ].map((f, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-colors"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                >
-                  <h3 className="text-xl font-bold mb-3">{f.q}</h3>
-                  <p className="text-white/80">{f.a}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="space-y-6" data-aos="fade-left">
-              {[
-                {
-                  q: "How does the AI work?",
-                  a: "Our AI combines multiple advanced algorithms to analyze data patterns and provide accurate predictions and insights."
-                },
-                {
-                  q: "What support do you offer?",
-                  a: "We provide 24/7 technical support, regular updates, and dedicated account managers for enterprise clients."
-                },
-                {
-                  q: "Can I customize the platform?",
-                  a: "Yes, our platform is highly customizable to meet your specific needs and requirements."
-                }
-              ].map((f, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-colors"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                >
-                  <h3 className="text-xl font-bold mb-3">{f.q}</h3>
-                  <p className="text-white/80">{f.a}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Contact CTA */}
-          <div className="text-center mt-16" data-aos="fade-up">
-            <p className="text-xl mb-6">Still have questions?</p>
-            <button 
-              className="bg-white text-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Contact Our Team
-            </button>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              {
+                question: "What industries do you serve?",
+                answer: "We serve a wide range of industries including healthcare, manufacturing, finance, and retail. Our AI solutions are adaptable to various business needs and can be customized for specific industry requirements."
+              },
+              {
+                question: "How long does implementation take?",
+                answer: "Implementation time varies depending on the complexity of the solution and your specific requirements. Typically, basic implementations can be completed within 4-6 weeks, while more complex solutions may take 3-6 months."
+              },
+              {
+                question: "What kind of support do you offer?",
+                answer: "We provide comprehensive support including 24/7 technical assistance, regular updates, training sessions, and dedicated account management. Our team ensures you get the most out of your AI solution."
+              },
+              {
+                question: "Is my data secure?",
+                answer: "Yes, we take data security very seriously. Our solutions comply with industry standards and regulations, implementing robust encryption and security measures to protect your sensitive information."
+              }
+            ].map((faq, i) => (
+              <div 
+                key={i}
+                className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
+              >
+                <h4 className="text-xl font-bold text-orange-500 mb-2">{faq.question}</h4>
+                <p className="text-gray-600">{faq.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CONTACT SECTION */}
-      <section id="contact" className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} py-32 px-4 md:px-16`}>
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16" data-aos="fade-up">
-            <h2 className="text-4xl font-black mb-4 text-orange-500">Let's Talk</h2>
-            <p className={`text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
-              We're here to help and answer any questions you might have
-            </p>
+      <section id="contact" className={`py-16 px-4 md:px-16 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <h2 className="text-4xl font-extrabold text-orange-500 mb-4 md:mb-0">Contact</h2>
+            <h3 className="text-3xl font-extrabold text-gray-900 text-center md:text-right">
+              Let's Build Your <span className="text-orange-500">AI Future</span>
+            </h3>
           </div>
-
-          <div className="flex flex-col lg:flex-row gap-16">
-            {/* Contact Form */}
-            <div className={`flex-1 p-8 rounded-3xl shadow-xl ${
-              isDarkMode 
-                ? 'bg-gradient-to-br from-gray-800 to-gray-900' 
-                : 'bg-gradient-to-br from-gray-50 to-white'
-            }`} data-aos="fade-right">
-              <form className="space-y-6">
-                <div>
-                  <label className={`block font-medium mb-2 ${
-                    isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                  }`}>
-                    <span className="flex items-center">
-                      <svg className="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      Name
-                    </span>
-                  </label>
-                  <input 
-                    type="text" 
-                    placeholder="Your name" 
-                    className={`w-full p-4 border-2 rounded-xl transition-all ${
-                      isDarkMode 
-                        ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
-                        : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
-                    }`}
-                    required 
-                  />
-                </div>
-                <div>
-                  <label className={`block font-medium mb-2 ${
-                    isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                  }`}>
-                    <span className="flex items-center">
-                      <svg className="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                      Email
-                    </span>
-                  </label>
-                  <input 
-                    type="email" 
-                    placeholder="Your email" 
-                    className={`w-full p-4 border-2 rounded-xl transition-all ${
-                      isDarkMode 
-                        ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
-                        : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
-                    }`}
-                    required 
-                  />
-                </div>
-                <div>
-                  <label className={`block font-medium mb-2 ${
-                    isDarkMode ? 'text-gray-200' : 'text-gray-700'
-                  }`}>
-                    <span className="flex items-center">
-                      <svg className="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                      </svg>
-                      Message
-                    </span>
-                  </label>
-                  <textarea 
-                    placeholder="How can we help?" 
-                    rows={4} 
-                    className={`w-full p-4 border-2 rounded-xl transition-all ${
-                      isDarkMode 
-                        ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
-                        : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
-                    }`}
-                    required
-                  ></textarea>
-                </div>
-                <button 
-                  type="submit" 
-                  className="w-full bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1 flex items-center justify-center"
-                >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Send Message
-                </button>
-              </form>
-
-              {/* Additional Contact Info */}
-              <div className={`mt-12 pt-8 border-t ${
-                isDarkMode ? 'border-gray-700' : 'border-gray-200'
-              }`}>
-                <h3 className={`text-2xl font-semibold mb-6 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-800'
-                }`}>
-                  <span className="flex items-center">
-                    <svg className="w-6 h-6 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Stay Updated
-                  </span>
-                </h3>
-                <div className="space-y-6">
-                  <p className={`text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
-                    Subscribe to our newsletter for the latest insights and updates in AI technology
-                  </p>
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <input 
-                      type="email" 
-                      placeholder="Enter your email" 
-                      className={`flex-1 px-6 py-4 rounded-xl transition-all ${
-                        isDarkMode 
-                          ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
-                          : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-6" data-aos="fade-right">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                <h4 className="text-xl font-bold text-orange-500 mb-4">Get in Touch</h4>
+                <form className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        isDarkMode ? contactFormInputStyles.dark.backgroundColor : contactFormInputStyles.light.backgroundColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.borderColor : contactFormInputStyles.light.borderColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.textColor : contactFormInputStyles.light.textColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.placeholderColor : contactFormInputStyles.light.placeholderColor
+                      } focus:outline-none ${
+                        isDarkMode ? contactFormInputStyles.dark.focusBorderColor : contactFormInputStyles.light.focusBorderColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.focusRingColor : contactFormInputStyles.light.focusRingColor
                       }`}
                     />
-                    <button className="bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1">
-                      Subscribe
-                    </button>
-                  </div>
-                  <div className="flex justify-center space-x-4 pt-4">
-                    <a 
-                      href="#" 
-                      className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1"
-                    >
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Interactive Support Section */}
-            <div className="flex-1 flex flex-col">
-              {/* Live Support Box */}
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-8 text-white shadow-xl mb-12" data-aos="fade-up">
-                <div className="flex items-center space-x-6 mb-6">
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-                      </svg>
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold">Live Chat</h3>
-                    <p className="text-white/80">Start a conversation</p>
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        isDarkMode ? contactFormInputStyles.dark.backgroundColor : contactFormInputStyles.light.backgroundColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.borderColor : contactFormInputStyles.light.borderColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.textColor : contactFormInputStyles.light.textColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.placeholderColor : contactFormInputStyles.light.placeholderColor
+                      } focus:outline-none ${
+                        isDarkMode ? contactFormInputStyles.dark.focusBorderColor : contactFormInputStyles.light.focusBorderColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.focusRingColor : contactFormInputStyles.light.focusRingColor
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      placeholder="Your Message"
+                      rows="4"
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        isDarkMode ? contactFormInputStyles.dark.backgroundColor : contactFormInputStyles.light.backgroundColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.borderColor : contactFormInputStyles.light.borderColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.textColor : contactFormInputStyles.light.textColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.placeholderColor : contactFormInputStyles.light.placeholderColor
+                      } focus:outline-none ${
+                        isDarkMode ? contactFormInputStyles.dark.focusBorderColor : contactFormInputStyles.light.focusBorderColor
+                      } ${
+                        isDarkMode ? contactFormInputStyles.dark.focusRingColor : contactFormInputStyles.light.focusRingColor
+                      }`}
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+                  >
+                    Send Message
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+            <div className="space-y-6" data-aos="fade-left">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                <h4 className="text-xl font-bold text-orange-500 mb-4">Contact Information</h4>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-4">
+                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <span className="text-gray-600">+1 (555) 123-4567</span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-gray-600">contact@enableintelligence.com</span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span className="text-gray-600">123 AI Street, Tech City, TC 12345</span>
                   </div>
                 </div>
+              </div>
+              
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                <h4 className="text-xl font-bold text-orange-500 mb-4">Follow Us</h4>
                 <div className="flex space-x-4">
-                  <button className="flex-1 bg-white text-orange-500 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1">
-                    Start Chat
-                  </button>
-                  <button className="flex-1 bg-white/20 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all transform hover:-translate-y-1">
-                    Schedule Call
-                  </button>
+                  {['twitter', 'linkedin', 'facebook', 'instagram'].map((social) => (
+                    <a
+                      key={social}
+                      href="#"
+                      className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition-colors"
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
+                      </svg>
+                    </a>
+                  ))}
                 </div>
               </div>
-
-              {/* Interactive Support Person */}
-              <div className="relative mb-12" data-aos="fade-up">
-                <div className="w-full h-96 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-3xl overflow-hidden">
-                  {/* Speech Bubbles */}
-                  <div className="absolute top-8 left-1/2 -translate-x-1/2 w-72 bg-white rounded-2xl p-4 shadow-xl animate-bounce z-10" style={{ animationDuration: '2s' }}>
-                    <div className="relative">
-                      <p className="text-gray-800 font-medium text-lg">Hi! How can I help you today?</p>
-                      <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white transform rotate-45"></div>
-                    </div>
-                  </div>
-
-                  <div className="absolute top-32 right-8 w-64 bg-orange-500 rounded-2xl p-4 shadow-xl animate-bounce z-10" style={{ animationDuration: '2s', animationDelay: '0.5s' }}>
-                    <div className="relative">
-                      <p className="text-white font-medium text-lg">I'm here to answer all your questions!</p>
-                      <div className="absolute -bottom-2 right-6 w-4 h-4 bg-orange-500 transform rotate-45"></div>
-                    </div>
-                  </div>
-
-                  {/* Support Person */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative w-72 h-72">
-                      {/* Animated Background Rings */}
-                      <div className="absolute inset-0">
-                        <div className="absolute inset-0 rounded-full border-4 border-orange-500/20 animate-ping" style={{ animationDuration: '3s' }}></div>
-                        <div className="absolute inset-4 rounded-full border-4 border-orange-500/20 animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }}></div>
-                        <div className="absolute inset-8 rounded-full border-4 border-orange-500/20 animate-ping" style={{ animationDuration: '3s', animationDelay: '1s' }}></div>
-                      </div>
-
-                      {/* Glowing Background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-orange-600/30 rounded-full animate-pulse blur-xl"></div>
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-full animate-pulse"></div>
-                      
-                      {/* Support Person Image with Live Effect */}
-                      <div className="relative w-full h-full rounded-full overflow-hidden">
-                        <img 
-                          src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmVzc2lvbmFsfGVufDB8fDB8fHww" 
-                          alt="Support Team" 
-                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                        />
-                        {/* Live Video Effect Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent animate-pulse"></div>
-                      </div>
-
-                      {/* Status Badge with Enhanced Animation */}
-                      <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-xl">
-                        <span className="text-orange-500 text-sm font-semibold flex items-center">
-                          <span className="relative flex h-3 w-3 mr-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                          </span>
-                          Live Now
-                        </span>
-                      </div>
-
-                      {/* Decorative Elements */}
-                      <div className="absolute -top-4 -left-4 w-8 h-8 bg-orange-500/20 rounded-full animate-pulse"></div>
-                      <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-orange-500/20 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Speech Bubble */}
-                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-72 bg-white rounded-2xl p-4 shadow-xl animate-bounce z-10" style={{ animationDuration: '2s', animationDelay: '1s' }}>
-                    <div className="relative">
-                      <p className="text-gray-800 font-medium text-lg">Feel free to ask anything!</p>
-                      <div className="absolute -top-2 left-6 w-4 h-4 bg-white transform rotate-45"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Company Info */}
-              <div className="text-right mt-auto" data-aos="fade-left">
-  <p className="italic text-4xl mb-12 font-light text-orange-500">
-    "Got a vision?<br />Let's build the AI to match."
-  </p>
-  <div className="flex items-center space-x-6 justify-end">
-    <div className="text-4xl font-black text-orange-500">
-      Enable<br />Intelligence
-    </div>
-  </div>
-</div>
-
             </div>
           </div>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className={`${isDarkMode ? 'bg-gray-900' : 'bg-gray-900'} text-white py-6`}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center text-sm"
-        >
-          © {new Date().getFullYear()} Enable Intelligence. All rights reserved.
-        </motion.div>
-      </footer>
-
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <motion.div
-            key="loading"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            {/* Energy Lines from Edges */}
-            {[
-              { from: 'top', rotate: 0, delay: 0.3 },
-              { from: 'right', rotate: 90, delay: 0.4 },
-              { from: 'bottom', rotate: 180, delay: 0.5 },
-              { from: 'left', rotate: 270, delay: 0.6 }
-            ].map((direction, index) => (
-              <motion.div
-                key={`energy-${index}`}
-                className="absolute inset-0 flex items-center justify-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: direction.delay }}
-              >
-                {/* Main Energy Line */}
-                <motion.div
-                  className="absolute w-[200%] h-2 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600"
-                  style={{
-                    transform: `rotate(${direction.rotate}deg)`,
-                    transformOrigin: 'center',
-                    opacity: 0.9
-                  }}
-                  initial={{ 
-                    scale: 0,
-                    opacity: 0,
-                    x: direction.from === 'left' ? '-100%' : direction.from === 'right' ? '100%' : 0,
-                    y: direction.from === 'top' ? '-100%' : direction.from === 'bottom' ? '100%' : 0
-                  }}
-                  animate={{
-                    scale: [0, 1],
-                    opacity: [0, 0.9, 0],
-                    x: 0,
-                    y: 0
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    delay: direction.delay,
-                    ease: "easeOut"
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 animate-pulse"></div>
-                </motion.div>
-
-                {/* Energy Particles */}
-                {[...Array(8)].map((_, i) => (
-                  <motion.div
-                    key={`particle-${index}-${i}`}
-                    className="absolute w-1 h-1 bg-orange-500 rounded-full"
-                    style={{
-                      transform: `rotate(${direction.rotate}deg)`,
-                      transformOrigin: 'center'
-                    }}
-                    initial={{ 
-                      scale: 0,
-                      opacity: 0,
-                      x: direction.from === 'left' ? '-100%' : direction.from === 'right' ? '100%' : 0,
-                      y: direction.from === 'top' ? '-100%' : direction.from === 'bottom' ? '100%' : 0
-                    }}
-                    animate={{
-                      scale: [0, 1.5, 0],
-                      opacity: [0, 0.8, 0],
-                      x: [0, Math.cos(i * 45 * Math.PI / 180) * 100],
-                      y: [0, Math.sin(i * 45 * Math.PI / 180) * 100]
-                    }}
-                    transition={{
-                      duration: 1,
-                      delay: direction.delay + i * 0.1,
-                      ease: "easeOut"
-                    }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-b from-orange-600 via-orange-500 to-orange-600 animate-pulse"></div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            ))}
-
-            {/* Letters Container */}
-            <div className="relative flex items-center justify-center">
-              {/* Initial White EI */}
-              <motion.div
-                className="text-[15rem] font-black text-white relative"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                EI
-              </motion.div>
-
-              {/* Charging Effect */}
-              <motion.div
-                className="absolute inset-0"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.4, delay: 1.2 }}
-              >
-                {/* Charging Animation */}
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.2 }}
-                >
-                  <motion.span
-                    className="text-[15rem] font-black text-orange-500 relative"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 1.2 }}
-                  >
-                    EI
-                  </motion.span>
-                </motion.div>
-
-                {/* Power Core Effect */}
-                <motion.div
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 1.2 }}
-                >
-                  {/* Core Glow */}
-                  <div className="absolute inset-0 bg-orange-500 rounded-full animate-pulse opacity-30 blur-xl"></div>
-                  
-                  {/* Power Rings */}
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={`ring-${i}`}
-                      className="absolute inset-0 border-2 border-orange-500 rounded-full"
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.8, 0.4, 0.8]
-                      }}
-                      transition={{
-                        duration: 2,
-                        delay: 1.2 + i * 0.2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    />
-                  ))}
-                </motion.div>
-
-                {/* Energy Burst Effect */}
-                <motion.div
-                  className="absolute inset-0"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 1.5 }}
-                >
-                  {[...Array(24)].map((_, i) => (
-                    <motion.div
-                      key={`burst-${i}`}
-                      className="absolute w-1 h-1 bg-orange-500 rounded-full"
-                      style={{
-                        left: '50%',
-                        top: '50%',
-                        transform: `translate(-50%, -50%) rotate(${i * 15}deg)`
-                      }}
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{
-                        scale: [0, 2, 0],
-                        opacity: [0, 1, 0],
-                        x: [
-                          0,
-                          Math.cos(i * Math.PI / 12) * 200,
-                          Math.cos(i * Math.PI / 12) * 300
-                        ],
-                        y: [
-                          0,
-                          Math.sin(i * Math.PI / 12) * 200,
-                          Math.sin(i * Math.PI / 12) * 300
-                        ]
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        delay: 1.5 + i * 0.05,
-                        ease: "easeOut"
-                      }}
-                    >
-                      <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-
-                {/* Electric Lines */}
-                {[...Array(8)].map((_, i) => (
-                  <motion.div
-                    key={`electric-${i}`}
-                    className="absolute w-1 h-32 bg-gradient-to-b from-orange-500 to-transparent"
-                    style={{
-                      left: '50%',
-                      top: '50%',
-                      transform: `translate(-50%, -50%) rotate(${i * 45}deg)`
-                    }}
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{
-                      scale: [0, 1, 0],
-                      opacity: [0, 0.8, 0]
-                    }}
-                    transition={{
-                      duration: 1,
-                      delay: 1.8 + i * 0.1,
-                      ease: "easeOut"
-                    }}
-                  >
-                    <div className="absolute inset-0 bg-white/30 rounded-full blur-sm"></div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* ... existing main content ... */}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
 
 export default App;
+
 
