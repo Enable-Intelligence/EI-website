@@ -301,7 +301,7 @@ function App() {
       </nav>
 
       {/* HOME SECTION */}
-      <section id="home" className={`h-screen flex flex-col lg:flex-row overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative`}>
+      <section id="home" className={`min-h-screen flex flex-col lg:flex-row ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative`}>
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full">
@@ -505,15 +505,88 @@ function App() {
       </section>
 
       {/* SOLUTIONS SECTION */}
-      <section id="solutions" className={`py-16 px-4 md:px-16 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-            <h2 className="text-4xl font-extrabold text-orange-500 mb-4 md:mb-0">Solutions</h2>
-            <h3 className="text-3xl font-extrabold text-gray-900 text-center md:text-right">
-              Shaping Tomorrow with <span className="text-orange-500">Intelligence</span> Today
-            </h3>
+      <section id="solutions" className={`relative min-h-screen flex items-center overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'}`}>
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Gradient Orbs */}
+          <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0s' }}></div>
+          <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-br from-orange-500/5 to-orange-600/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          
+          {/* Animated Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          
+          {/* Floating Particles */}
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={`particle-${i}`}
+              className="absolute w-2 h-2 bg-orange-500/20 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0.3, 0.8, 0.3],
+                scale: [1, 1.5, 1]
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: i * 0.1
+              }}
+            />
+          ))}
+
+          {/* Energy Lines */}
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={`line-${i}`}
+              className="absolute h-1 bg-gradient-to-r from-orange-500/20 to-transparent"
+              style={{
+                left: '0',
+                top: `${i * 12}%`,
+                width: '100%',
+                transform: `rotate(${i * 5}deg)`
+              }}
+              animate={{
+                opacity: [0.2, 0.5, 0.2],
+                scaleX: [0.8, 1.2, 0.8]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                delay: i * 0.2
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 py-8 relative z-10">
+          {/* Section Header with Enhanced Design */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 relative">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl"></div>
+              <h2 className="text-5xl md:text-6xl font-black text-orange-500 mb-4 md:mb-0 tracking-tight relative">Solutions</h2>
+            </div>
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-2xl blur-xl"></div>
+              <h3 className="text-4xl md:text-5xl font-black text-gray-900 text-center md:text-right max-w-3xl leading-tight relative">
+                Shaping Tomorrow with <span className="text-orange-500 relative">
+                  Intelligence
+                  <motion.div
+                    className="absolute -bottom-2 left-0 w-full h-1 bg-orange-500"
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </span> Today
+              </h3>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          {/* Solutions Grid with Enhanced Card Design */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
             {[
               { 
                 title: "SPOCARE", 
@@ -551,7 +624,7 @@ function App() {
             ].map((s, i) => (
               <div 
                 key={i} 
-                className="group relative bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-2xl transition-all duration-300" 
+                className="group relative bg-gradient-to-br from-orange-50/80 to-orange-100/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center hover:shadow-3xl transition-all duration-300 h-full flex flex-col transform hover:-translate-y-2 border border-orange-100/50" 
                 data-aos="zoom-in" 
                 data-aos-delay={i * 100}
                 onClick={() => {
@@ -560,10 +633,13 @@ function App() {
                   }
                 }}
               >
-                {/* Desktop View - Unchanged */}
-                <div className="hidden md:block">
+                {/* Card Glow Effect */}
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-3xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                
+                {/* Desktop View */}
+                <div className="hidden md:block flex-1 flex flex-col">
                   <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]`}>{s.title}</h4>
-                  <div className="relative h-48 mb-6">
+                  <div className="relative h-40 mb-5 flex-shrink-0">
                     <img 
                       src={s.img} 
                       alt={s.title} 
@@ -571,9 +647,9 @@ function App() {
                     />
                   </div>
                   {/* Desktop Hover Reveal Overlay */}
-                  <div className="absolute inset-0 bg-orange-500/90 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/95 to-orange-600/95 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20">
                     <motion.p 
-                      className="text-white text-sm"
+                      className="text-white text-sm leading-relaxed"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ 
@@ -587,12 +663,12 @@ function App() {
                   </div>
                 </div>
 
-                {/* Mobile View - Same as Desktop but with Tap */}
-                <div className="md:hidden">
+                {/* Mobile View */}
+                <div className="md:hidden flex-1 flex flex-col">
                   <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 transition-all duration-300 ${
                     activeCard === i ? 'opacity-0' : 'opacity-100'
                   }`}>{s.title}</h4>
-                  <div className="relative h-48 mb-6">
+                  <div className="relative h-40 mb-5 flex-shrink-0">
                     <img 
                       src={s.img} 
                       alt={s.title} 
@@ -603,12 +679,12 @@ function App() {
                   </div>
                   {/* Mobile Tap Reveal Overlay */}
                   <div 
-                    className={`absolute inset-0 bg-orange-500/90 rounded-xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20 ${
+                    className={`absolute inset-0 bg-gradient-to-br from-orange-500/95 to-orange-600/95 rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20 ${
                       activeCard === i ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
                   >
                     <motion.p 
-                      className="text-white text-sm"
+                      className="text-white text-sm leading-relaxed"
                       initial={{ opacity: 0, y: 20 }}
                       animate={activeCard === i ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                       transition={{ 
@@ -623,25 +699,13 @@ function App() {
                 </div>
 
                 {/* Mobile Touch Indicator */}
-                <div className="absolute bottom-2 right-2 md:hidden">
-                  <span className="text-xs text-gray-400">
+                <div className="absolute bottom-4 right-4 md:hidden">
+                  <span className="text-sm text-orange-500 bg-white/90 px-3 py-1.5 rounded-full shadow-lg">
                     {activeCard === i ? 'Tap to close' : 'Tap to view details'}
                   </span>
                 </div>
               </div>
             ))}
-
-            {/* Add scroll event listener for mobile */}
-            {useEffect(() => {
-              const handleScroll = () => {
-                if (window.innerWidth < 768 && activeCard !== null) {
-                  setActiveCard(null);
-                }
-              };
-
-              window.addEventListener('scroll', handleScroll);
-              return () => window.removeEventListener('scroll', handleScroll);
-            }, [activeCard])}
           </div>
         </div>
       </section>
