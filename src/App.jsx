@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import emailjs from '@emailjs/browser';
 
 import logo from "./assets/logo.png";
 import navLogo from "./assets/logo512.png";
@@ -59,6 +60,8 @@ function App() {
   const techSectionRef = useRef(null);
   const [setTechSectionScrollProgress] = useState(0);
   const [activeCard, setActiveCard] = useState(null);
+  const [formStatus, setFormStatus] = useState({ loading: false, success: false, error: null });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   // Add window resize listener
   useEffect(() => {
@@ -77,7 +80,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // initialise AOS (scroll animations)
+  // initialize AOS (scroll animations)
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
   }, []);
@@ -150,6 +153,70 @@ function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   },);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init({
+      publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+      limitRate: true,
+      blockHeadless: false
+    });
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus({ loading: true, success: false, error: null });
+
+    try {
+      // Log environment variables (without values) to verify they exist
+      console.log('Checking environment variables:', {
+        hasPublicKey: !!import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+        hasServiceId: !!import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        hasTemplateId: !!import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+      });
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_email: "admin@enableintelligence.com",
+        reply_to: formData.email,
+      };
+
+      const response = await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      console.log('EmailJS Response:', response);
+      setFormStatus({ loading: false, success: true, error: null });
+      setFormData({ name: '', email: '', message: '' });
+      
+    } catch (err) {
+      console.error('EmailJS Error Details:', {
+        name: err.name,
+        message: err.message,
+        text: err.text,
+        status: err.status
+      });
+
+      setFormStatus({ 
+        loading: false, 
+        success: false, 
+        error: `Failed to send message: ${err.text || err.message || 'Unknown error'}` 
+      });
+    }
+  };
 
   const navLinks = [
     { id: "home", label: "Home" },
@@ -1134,7 +1201,7 @@ function App() {
                 ? 'bg-gradient-to-br from-gray-800 to-gray-900' 
                 : 'bg-gradient-to-br from-gray-50 to-white'
             }`} data-aos="fade-right">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label className={`block font-medium mb-2 ${
                     isDarkMode ? 'text-gray-200' : 'text-gray-700'
@@ -1148,6 +1215,9 @@ function App() {
                   </label>
                   <input 
                     type="text" 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     placeholder="Your name" 
                     className={`w-full p-4 border-2 rounded-xl transition-all ${
                       isDarkMode 
@@ -1170,6 +1240,9 @@ function App() {
                   </label>
                   <input 
                     type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     placeholder="Your email" 
                     className={`w-full p-4 border-2 rounded-xl transition-all ${
                       isDarkMode 
@@ -1191,6 +1264,9 @@ function App() {
                     </span>
                   </label>
                   <textarea 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
                     placeholder="How can we help?" 
                     rows={4} 
                     className={`w-full p-4 border-2 rounded-xl transition-all ${
@@ -1201,174 +1277,70 @@ function App() {
                     required
                   ></textarea>
                 </div>
-                <button 
-                  type="submit" 
-                  className="w-full bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1 flex items-center justify-center"
-                >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Send Message
-                </button>
-              </form>
 
-              {/* Additional Contact Info */}
-              <div className={`mt-12 pt-8 border-t ${
-                isDarkMode ? 'border-gray-700' : 'border-gray-200'
-              }`}>
-                <h3 className={`text-2xl font-semibold mb-6 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-800'
-                }`}>
-                  <span className="flex items-center">
-                    <svg className="w-6 h-6 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                {/* Status Messages */}
+                {formStatus.error && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span className="block sm:inline">{formStatus.error}</span>
+                  </div>
+                )}
+                {formStatus.success && (
+                  <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <span className="block sm:inline">Message sent successfully! We'll get back to you soon.</span>
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button 
+                    type="submit" 
+                    disabled={formStatus.loading}
+                    className={`flex-1 bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold transition-all transform hover:-translate-y-1 flex items-center justify-center ${
+                      formStatus.loading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-orange-600'
+                    }`}
+                  >
+                    {formStatus.loading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        Send Message
+                      </>
+                    )}
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => window.open('https://tidycal.com/mp06p73/15-minute-meeting', '_blank')}
+                    className="flex-1 bg-white text-orange-500 border-2 border-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-orange-50 transition-all transform hover:-translate-y-1 flex items-center justify-center"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    Stay Updated
-                  </span>
-                </h3>
-                <div className="space-y-6">
-                  <p className={`text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
-                    Subscribe to our newsletter for the latest insights and updates in AI technology
-                  </p>
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <input 
-                      type="email" 
-                      placeholder="Enter your email" 
-                      className={`flex-1 px-6 py-4 rounded-xl transition-all ${
-                        isDarkMode 
-                          ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
-                          : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
-                      }`}
-                    />
-                    <button className="bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1">
-                      Subscribe
-                    </button>
-                  </div>
-                  <div className="flex justify-center space-x-4 pt-4">
-                    <a 
-                      href="#" 
-                      className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:-translate-y-1"
-                    >
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </a>
-                  </div>
+                    Book a Meeting
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
 
-            {/* Interactive Support Section */}
-            <div className="flex-1 flex flex-col">
-              {/* Live Support Box */}
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-8 text-white shadow-xl mb-12" data-aos="fade-up">
-                <div className="flex items-center space-x-6 mb-6">
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-                      </svg>
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold">Live Chat</h3>
-                    <p className="text-white/80">Start a conversation</p>
-                  </div>
-                </div>
-                <div className="flex space-x-4">
-                  <button className="flex-1 bg-white text-orange-500 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1">
-                    Start Chat
-                  </button>
-                  <button className="flex-1 bg-white/20 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all transform hover:-translate-y-1">
-                    Schedule Call
-                  </button>
-                </div>
-              </div>
-
-              {/* Interactive Support Person */}
-              <div className="relative mb-12" data-aos="fade-up">
-                <div className="w-full h-96 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-3xl overflow-hidden">
-                  {/* Speech Bubbles */}
-                  <div className="absolute top-8 left-1/2 -translate-x-1/2 w-72 bg-white rounded-2xl p-4 shadow-xl animate-bounce z-10" style={{ animationDuration: '2s' }}>
-                    <div className="relative">
-                      <p className="text-gray-800 font-medium text-lg">Hi! How can I help you today?</p>
-                      <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white transform rotate-45"></div>
-                    </div>
-                  </div>
-
-                  <div className="absolute top-32 right-8 w-64 bg-orange-500 rounded-2xl p-4 shadow-xl animate-bounce z-10" style={{ animationDuration: '2s', animationDelay: '0.5s' }}>
-                    <div className="relative">
-                      <p className="text-white font-medium text-lg">I'm here to answer all your questions!</p>
-                      <div className="absolute -bottom-2 right-6 w-4 h-4 bg-orange-500 transform rotate-45"></div>
-                    </div>
-                  </div>
-
-                  {/* Support Person */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative w-72 h-72">
-                      {/* Animated Background Rings */}
-                      <div className="absolute inset-0">
-                        <div className="absolute inset-0 rounded-full border-4 border-orange-500/20 animate-ping" style={{ animationDuration: '3s' }}></div>
-                        <div className="absolute inset-4 rounded-full border-4 border-orange-500/20 animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }}></div>
-                        <div className="absolute inset-8 rounded-full border-4 border-orange-500/20 animate-ping" style={{ animationDuration: '3s', animationDelay: '1s' }}></div>
-                      </div>
-
-                      {/* Glowing Background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-orange-600/30 rounded-full animate-pulse blur-xl"></div>
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-full animate-pulse"></div>
-                      
-                      {/* Support Person Image with Live Effect */}
-                      <div className="relative w-full h-full rounded-full overflow-hidden">
-                        <img 
-                          src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmVzc2lvbmFsfGVufDB8fDB8fHww" 
-                          alt="Support Team" 
-                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                        />
-                        {/* Live Video Effect Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent animate-pulse"></div>
-                  </div>
-
-                      {/* Status Badge with Enhanced Animation */}
-                      <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-xl">
-                        <span className="text-orange-500 text-sm font-semibold flex items-center">
-                          <span className="relative flex h-3 w-3 mr-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                          </span>
-                          Live Now
-                        </span>
-                      </div>
-
-                      {/* Decorative Elements */}
-                      <div className="absolute -top-4 -left-4 w-8 h-8 bg-orange-500/20 rounded-full animate-pulse"></div>
-                      <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-orange-500/20 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Speech Bubble */}
-                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-72 bg-white rounded-2xl p-4 shadow-xl animate-bounce z-10" style={{ animationDuration: '2s', animationDelay: '1s' }}>
-                    <div className="relative">
-                      <p className="text-gray-800 font-medium text-lg">Feel free to ask anything!</p>
-                      <div className="absolute -top-2 left-6 w-4 h-4 bg-white transform rotate-45"></div>
-                    </div>
+            {/* Company Info */}
+            <div className="flex-1 flex flex-col justify-center" data-aos="fade-left">
+              <div className="text-right">
+                <p className="italic text-4xl mb-12 font-light text-orange-500">
+                  "Got a vision?<br />Let's build the AI to match."
+                </p>
+                <div className="flex items-center space-x-6 justify-end">
+                  <div className="text-4xl font-black text-orange-500">
+                    Enable<br />Intelligence
                   </div>
                 </div>
               </div>
-
-              {/* Company Info */}
-              <div className="text-right mt-auto" data-aos="fade-left">
-  <p className="italic text-4xl mb-12 font-light text-orange-500">
-    "Got a vision?<br />Let's build the AI to match."
-  </p>
-  <div className="flex items-center space-x-6 justify-end">
-    <div className="text-4xl font-black text-orange-500">
-      Enable<br />Intelligence
-    </div>
-  </div>
-</div>
-
             </div>
           </div>
         </div>
