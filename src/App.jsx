@@ -173,10 +173,15 @@ function App() {
 
   return (
     <div
-      className={`font-sans transition-colors duration-300 overflow-x-hidden ${
+      className={`font-sans transition-colors duration-300 overflow-x-hidden relative ${
         isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       }`}
     >
+      {/* Global Background Effects */}
+      <div className="fixed inset-0 pointer-events-none">
+        {/* Background effects removed */}
+      </div>
+
       {/* NAVBAR */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 ${
@@ -301,22 +306,7 @@ function App() {
       </nav>
 
       {/* HOME SECTION */}
-      <section id="home" className={`min-h-screen flex flex-col lg:flex-row ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative pt-16`}>
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full">
-            {/* Modern Gradient Orbs */}
-            <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-orange-500/5 to-orange-600/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          </div>
-          {/* Modern Pattern Overlay */}
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
-            <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-          </div>
-        </div>
-
+      <section id="home" className="min-h-screen flex flex-col lg:flex-row relative pt-16">
         {/* Left Content */}
         <div className="flex-1 p-4 md:p-8 flex flex-col justify-center relative z-10">
           {/* Logo and Content */}
@@ -505,63 +495,7 @@ function App() {
       </section>
 
       {/* SOLUTIONS SECTION */}
-      <section id="solutions" className={`relative min-h-screen flex items-center overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'}`}>
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Gradient Orbs */}
-          <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0s' }}></div>
-          <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-br from-orange-500/5 to-orange-600/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          
-          {/* Animated Grid Pattern */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-          
-          {/* Floating Particles */}
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={`particle-${i}`}
-              className="absolute w-2 h-2 bg-orange-500/20 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`
-              }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.5, 1]
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: i * 0.1
-              }}
-            />
-          ))}
-
-          {/* Energy Lines */}
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={`line-${i}`}
-              className="absolute h-1 bg-gradient-to-r from-orange-500/20 to-transparent"
-              style={{
-                left: '0',
-                top: `${i * 12}%`,
-                width: '100%',
-                transform: `rotate(${i * 5}deg)`
-              }}
-              animate={{
-                opacity: [0.2, 0.5, 0.2],
-                scaleX: [0.8, 1.2, 0.8]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 0.2
-              }}
-            />
-          ))}
-        </div>
-
+      <section id="solutions" className="relative min-h-screen flex items-center overflow-hidden">
         <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 py-8 relative z-10">
           {/* Section Header with Enhanced Design */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-12 relative">
@@ -711,38 +645,7 @@ function App() {
       </section>
 
       {/* TECHNOLOGY SECTION */}
-      <section id="technology" className={`relative h-screen flex items-center ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} overflow-hidden w-full pt-16`} ref={techSectionRef}>
-        {/* Modern Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-          
-          {/* Enhanced Grid Pattern */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-          
-          {/* Floating Tech Particles */}
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={`tech-particle-${i}`}
-              className="absolute w-1.5 h-1.5 bg-orange-500/20 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`
-              }}
-              animate={{
-                y: [0, -20, 0],
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.5, 1]
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: i * 0.1
-              }}
-            />
-          ))}
-        </div>
-
+      <section id="technology" className="relative h-screen flex items-center overflow-hidden w-full pt-16" ref={techSectionRef}>
         <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 relative h-full flex flex-col">
           {/* Modern Section Header with Enhanced Design */}
           <div className="flex flex-col items-center text-center pt-4 mb-4" data-aos="fade-up">
@@ -1017,13 +920,7 @@ function App() {
       </section>
 
       {/* RESOURCES SECTION */}
-      <section id="resources" className={`${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-24 px-4 md:px-16 relative overflow-hidden`}>
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
+      <section id="resources" className="py-24 px-4 md:px-16 relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
@@ -1146,13 +1043,7 @@ function App() {
       </section>
 
       {/* FAQS SECTION */}
-      <section id="faqs" className={`${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-orange-500 to-orange-600'} py-24 px-4 md:px-16 relative text-white overflow-hidden`}>
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
+      <section id="faqs" className={`${isDarkMode ? 'bg-orange-500/90' : 'bg-orange-500'} py-24 px-4 md:px-16 relative text-white overflow-hidden backdrop-blur-sm`}>
         <div className="max-w-7xl mx-auto relative">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
@@ -1237,7 +1128,7 @@ function App() {
       </section>
 
       {/* CONTACT SECTION */}
-      <section id="contact" className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} py-32 px-4 md:px-16`}>
+      <section id="contact" className={`${isDarkMode ? 'bg-gray-800/90' : 'bg-white/90'} py-32 px-4 md:px-16 backdrop-blur-sm`}>
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
@@ -1495,7 +1386,7 @@ function App() {
       </section>
 
       {/* FOOTER */}
-      <footer className={`${isDarkMode ? 'bg-gray-900' : 'bg-gray-900'} text-white py-6`}>
+      <footer className={`${isDarkMode ? 'bg-gray-900/90' : 'bg-gray-900/90'} text-white py-6 backdrop-blur-sm`}>
                     <motion.div 
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
