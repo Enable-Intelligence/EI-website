@@ -645,30 +645,30 @@ function App() {
       </section>
 
       {/* TECHNOLOGY SECTION */}
-      <section id="technology" className="relative h-screen flex items-center overflow-hidden w-full pt-16" ref={techSectionRef}>
-        <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 relative h-full flex flex-col">
+      <section id="technology" className="relative min-h-screen flex items-center overflow-hidden w-full pt-20 pb-12 md:pt-24 md:pb-16" ref={techSectionRef}>
+        <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 relative flex flex-col">
           {/* Modern Section Header with Enhanced Design */}
-          <div className="flex flex-col items-center text-center pt-4 mb-4" data-aos="fade-up">
+          <div className="flex flex-col items-center text-center mb-8 md:mb-12" data-aos="fade-up">
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl"></div>
               <div className="inline-block bg-gradient-to-r from-orange-500/20 to-orange-600/20 px-6 py-2 rounded-2xl backdrop-blur-sm relative">
-                <h2 className="text-4xl md:text-5xl font-black text-orange-500">Technology</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-orange-500">Technology</h2>
               </div>
             </div>
-            <p className={`mt-3 text-base md:text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'} max-w-2xl`}>
+            <p className={`mt-3 text-sm sm:text-base md:text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'} max-w-2xl px-4`}>
               Harnessing the power of artificial intelligence to transform industries
             </p>
           </div>
 
-          {/* Main Content Grid - Adjusted for better alignment and spacing */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto flex-1">
-            {/* Left Side: Main Animation - Adjusted position */}
-            <div className="flex justify-center lg:justify-start lg:pl-12">
+          {/* Main Content Grid - Adjusted for better responsiveness */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto flex-1">
+            {/* Left Side: Main Animation - Adjusted for better scaling */}
+            <div className="flex justify-center lg:justify-start lg:pl-4 xl:pl-12">
               <div 
-                className="relative w-72 h-72 md:w-96 md:h-96 cursor-pointer select-none group"
+                className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 cursor-pointer select-none group"
                 onClick={() => setEiSplit((v) => !v)}
               >
-                {/* Enhanced Main Circle */}
+                {/* Enhanced Main Circle - Adjusted for better scaling */}
                 <div className="absolute inset-0">
                   {/* Outer Circle with Enhanced Glow */}
                   <motion.div
@@ -689,7 +689,7 @@ function App() {
 
                   {/* Inner Circle with Enhanced Effects */}
                   <motion.div
-                    className="absolute inset-8 rounded-full bg-gradient-to-br from-orange-300/20 to-orange-400/20"
+                    className="absolute inset-[10%] rounded-full bg-gradient-to-br from-orange-300/20 to-orange-400/20"
                     animate={{
                       scale: [1, 1.05, 1],
                       opacity: [0.6, 0.8, 0.6]
@@ -704,7 +704,7 @@ function App() {
                     <div className="absolute inset-0 rounded-full border border-orange-400/30"></div>
                   </motion.div>
 
-                  {/* Enhanced Rotating Rings */}
+                  {/* Enhanced Rotating Rings - Adjusted for better scaling */}
                   <motion.div
                     className="absolute inset-0"
                     animate={{ rotate: 360 }}
@@ -726,7 +726,7 @@ function App() {
                   </motion.div>
                 </div>
 
-                {/* EI Letters with Enhanced Animation */}
+                {/* EI Letters with Enhanced Animation - Adjusted for better scaling */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <motion.div
                     className="relative flex items-center justify-center"
@@ -750,7 +750,7 @@ function App() {
                             <div className="absolute inset-0 rounded-full border-2 border-orange-400/60"></div>
                           </motion.div>
 
-                          {/* Enhanced Spark Ring */}
+                          {/* Enhanced Spark Ring - Adjusted for better scaling */}
                           <motion.div
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
@@ -758,27 +758,27 @@ function App() {
                             transition={{ duration: 1 }}
                             className="absolute inset-0 z-20"
                           >
-                            {[...Array(48)].map((_, i) => (
+                            {[...Array(32)].map((_, i) => (
                               <motion.div
                                 key={`power-spark-${i}`}
-                                className="absolute w-1.5 h-1.5 bg-orange-400 rounded-full"
+                                className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 bg-orange-400 rounded-full"
                                 style={{
                                   left: '50%',
                                   top: '50%',
-                                  transform: `translate(-50%, -50%) rotate(${i * 7.5}deg)`
+                                  transform: `translate(-50%, -50%) rotate(${i * 11.25}deg)`
                                 }}
                                 animate={{
                                   scale: [0, 1.5, 0],
                                   opacity: [0, 1, 0],
                                   x: [
-                                    Math.cos(i * Math.PI / 24) * 120,
-                                    Math.cos(i * Math.PI / 24) * 100,
-                                    Math.cos(i * Math.PI / 24) * 120
+                                    Math.cos(i * Math.PI / 16) * 80,
+                                    Math.cos(i * Math.PI / 16) * 60,
+                                    Math.cos(i * Math.PI / 16) * 80
                                   ],
                                   y: [
-                                    Math.sin(i * Math.PI / 24) * 120,
-                                    Math.sin(i * Math.PI / 24) * 100,
-                                    Math.sin(i * Math.PI / 24) * 120
+                                    Math.sin(i * Math.PI / 16) * 80,
+                                    Math.sin(i * Math.PI / 16) * 60,
+                                    Math.sin(i * Math.PI / 16) * 80
                                   ]
                                 }}
                                 transition={{
@@ -808,7 +808,7 @@ function App() {
                         duration: 1.5,
                         delay: 0.6 
                       }}
-                      className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
+                      className="text-7xl sm:text-8xl md:text-9xl font-black text-orange-500 drop-shadow-lg z-30"
                       style={{ fontFamily: 'inherit' }}
                     >
                       E
@@ -825,7 +825,7 @@ function App() {
                         duration: 1.5,
                         delay: 0.6 
                       }}
-                      className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
+                      className="text-7xl sm:text-8xl md:text-9xl font-black text-orange-500 drop-shadow-lg z-30"
                       style={{ fontFamily: 'inherit' }}
                     >
                       I
@@ -833,7 +833,7 @@ function App() {
                   </motion.div>
                 </div>
 
-                {/* Enhanced Floating Text */}
+                {/* Enhanced Floating Text - Adjusted for better scaling */}
                 <AnimatePresence>
                   {eiSplit && isTechSectionVisible && (
                     <motion.div
@@ -847,8 +847,8 @@ function App() {
                       }}
                       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
                     >
-                      <div className="bg-white/95 backdrop-blur-sm px-8 py-4 rounded-full shadow-xl">
-                        <span className="text-2xl font-semibold text-gray-800 whitespace-nowrap">
+                      <div className="bg-white/95 backdrop-blur-sm px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-full shadow-xl">
+                        <span className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 whitespace-nowrap">
                           Enable Intelligence
                         </span>
                       </div>
@@ -858,8 +858,8 @@ function App() {
               </div>
             </div>
 
-            {/* Right Side: Features Grid - Adjusted for better content visibility */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {/* Right Side: Features Grid - Adjusted for better responsiveness */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mt-8 lg:mt-0">
               {[
                 { 
                   icon: aiIcon, 
@@ -888,7 +888,7 @@ function App() {
               ].map((t, i) => (
                 <motion.div 
                   key={i} 
-                  className="group relative bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 h-full"
+                  className="group relative bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 sm:p-5 md:p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 h-full"
                   initial={{ opacity: 0, y: 20 }}
                   animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.8, delay: 0.2 * i }}
@@ -899,14 +899,14 @@ function App() {
                   {/* Content */}
                   <div className="relative z-10 h-full flex flex-col">
                     <motion.div 
-                      className="w-14 h-14 md:w-16 md:h-16 mb-4 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 p-2 transform group-hover:scale-110 transition-transform duration-500"
+                      className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mb-3 sm:mb-4 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 p-2 transform group-hover:scale-110 transition-transform duration-500"
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.8 }}
                     >
                       <img src={t.icon} alt={t.label} className="w-full h-full object-contain filter brightness-0 invert" />
                     </motion.div>
-                    <h3 className="font-bold text-lg md:text-xl mb-2 text-gray-900">{t.label}</h3>
-                    <p className="text-gray-600 text-base leading-relaxed">{t.desc}</p>
+                    <h3 className="font-bold text-base sm:text-lg md:text-xl mb-2 text-gray-900">{t.label}</h3>
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{t.desc}</p>
                   </div>
 
                   {/* Hover Effects */}
