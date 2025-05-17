@@ -54,7 +54,6 @@ function App() {
   const [isTechSectionVisible, setIsTechSectionVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [scrollDirection, setScrollDirection] = useState("up");
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const techSectionRef = useRef(null);
@@ -89,13 +88,8 @@ function App() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsTechSectionVisible(true);
-          setEiSplit(true); // Split when entering the section
         } else {
           setIsTechSectionVisible(false);
-          // Close only if scrolling down
-          if (scrollDirection === "down") {
-            setEiSplit(false);
-          }
         }
       },
       { threshold: 0.3 }
@@ -104,7 +98,7 @@ function App() {
     const techSection = document.getElementById("technology");
     if (techSection) observer.observe(techSection);
     return () => techSection && observer.unobserve(techSection);
-  }, [scrollDirection]); // Add scrollDirection as a dependency
+  }, []); // Remove scrollDirection dependency
 
   // update currentSection based on scroll position
   useEffect(() => {
@@ -130,11 +124,6 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY) {
-        setScrollDirection("down");
-      } else if (currentScrollY < lastScrollY) {
-        setScrollDirection("up");
-      }
       setLastScrollY(currentScrollY);
     };
 
