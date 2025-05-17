@@ -49,15 +49,26 @@ const contactFormInputStyles = {
 
 function App() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [ setCurrentSection] = useState("home");
-  const [eiSplit, setEiSplit] = useState(true); // Initialize as true for initial split
+  const [setCurrentSection] = useState("home");
+  const [eiSplit, setEiSplit] = useState(true);
   const [isTechSectionVisible, setIsTechSectionVisible] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollDirection, setScrollDirection] = useState("up");
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const techSectionRef = useRef(null);
-  const [techSectionScrollProgress, setTechSectionScrollProgress] = useState(0);
+  const [setTechSectionScrollProgress] = useState(0);
+  const [activeCard, setActiveCard] = useState(null);
+
+  // Add window resize listener
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Loading effect
   useEffect(() => {
@@ -149,7 +160,7 @@ function App() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  },);
 
   const navLinks = [
     { id: "home", label: "Home" },
@@ -162,10 +173,15 @@ function App() {
 
   return (
     <div
-      className={`font-sans transition-colors duration-300 overflow-x-hidden ${
+      className={`font-sans transition-colors duration-300 overflow-x-hidden relative ${
         isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       }`}
     >
+      {/* Global Background Effects */}
+      <div className="fixed inset-0 pointer-events-none">
+        {/* Background effects removed */}
+      </div>
+
       {/* NAVBAR */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 ${
@@ -290,27 +306,12 @@ function App() {
       </nav>
 
       {/* HOME SECTION */}
-      <section id="home" className={`pt-16 min-h-screen flex flex-col lg:flex-row overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} relative`}>
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full">
-            {/* Modern Gradient Orbs */}
-            <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-orange-500/5 to-orange-600/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          </div>
-          {/* Modern Pattern Overlay */}
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
-            <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-          </div>
-        </div>
-
+      <section id="home" className="min-h-screen flex flex-col lg:flex-row relative pt-16">
         {/* Left Content */}
-        <div className="flex-1 p-8 md:p-16 flex flex-col justify-center relative z-10">
+        <div className="flex-1 p-4 md:p-8 flex flex-col justify-center relative z-10">
           {/* Logo and Content */}
           <div className="relative">
-            <div className="flex justify-center items-center h-40 mb-8 relative">
+            <div className="flex justify-center items-center h-36 mb-6 relative">
               <motion.img
                 src={logo}
                 alt="Enable Intelligence Logo"
@@ -329,11 +330,12 @@ function App() {
               <div className="absolute inset-0 bg-orange-500/20 rounded-full blur-2xl animate-pulse"></div>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-8 max-w-4xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-center space-y-3"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
                   <span className="text-orange-500 relative inline-block">
@@ -345,28 +347,39 @@ function App() {
                       transition={{ duration: 1, delay: 0.5 }}
                     />
                   </span>
-                  <br />
-                  <span className={`${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Where AI Meets Innovation</span>
+                  <div className="mt-3">
+                    <span className={`text-2xl md:text-3xl ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Where AI Meets Innovation</span>
+                  </div>
                 </h1>
               </motion.div>
 
-              <motion.p 
-                className={`text-lg md:text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-600'} leading-relaxed`}
+              <motion.div 
+                className={`text-center space-y-5 ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                We're a forward‑thinking, AI‑driven organization born from a vision to reimagine how industries operate. At Enable Intelligence, we don't just develop AI—we enable intelligence.
-              </motion.p>
+                <p className="text-xl md:text-2xl font-bold text-orange-500">
+                  Empowering Industries with Next-Generation Adaptive AI
+                </p>
+                <div className="space-y-3 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                  <p>
+                    At Enable Intelligence, we are revolutionizing the future of business through cutting-edge artificial intelligence solutions.
+                  </p>
+                  <p>
+                    We help organizations transform, innovate, and thrive in a rapidly evolving digital landscape.
+                  </p>
+                </div>
+              </motion.div>
 
               <motion.div 
-                className="flex flex-wrap gap-4 pt-4"
+                className="flex flex-wrap justify-center gap-6 pt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <button 
-                  className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden" 
+                  className="group relative px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold overflow-hidden min-w-[200px] text-lg" 
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <span className="relative z-10 group-hover:text-black">Get Started</span>
@@ -374,7 +387,7 @@ function App() {
                   <div className="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </button>
                 <button 
-                  className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden" 
+                  className="group relative px-8 py-4 bg-white text-orange-500 rounded-xl font-semibold border-2 border-orange-500 overflow-hidden min-w-[200px] text-lg" 
                   onClick={() => document.getElementById('technology')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   <span className="relative z-10 group-hover:text-black">Learn More</span>
@@ -387,7 +400,7 @@ function App() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="flex-1 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
           {/* Animated Background */}
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent"></div>
@@ -407,28 +420,63 @@ function App() {
                   <motion.span 
                     className="text-black inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [-5, 5, -5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Empowering
                   </motion.span><br />
                   <motion.span 
                     className="text-white inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [5, -5, 5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 0.5
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Decisions.
                   </motion.span><br />
                   <motion.span 
                     className="text-black inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [-5, 5, -5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Enabling
                   </motion.span><br />
                   <motion.span 
                     className="text-white inline-block"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    animate={isMobile ? {
+                      y: [5, -5, 5],
+                      scale: [1, 1.02, 1]
+                    } : {}}
+                    transition={isMobile ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1.5
+                    } : { type: "spring", stiffness: 300, damping: 10 }}
                   >
                     Insight.
                   </motion.span>
@@ -447,15 +495,32 @@ function App() {
       </section>
 
       {/* SOLUTIONS SECTION */}
-      <section id="solutions" className={`py-16 px-4 md:px-16 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-            <h2 className="text-4xl font-extrabold text-orange-500 mb-4 md:mb-0">Solutions</h2>
-            <h3 className="text-3xl font-extrabold text-gray-900 text-center md:text-right">
-              Shaping Tomorrow with <span className="text-orange-500">Intelligence</span> Today
-            </h3>
+      <section id="solutions" className="relative min-h-screen flex items-center overflow-hidden">
+        <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 py-8 relative z-10">
+          {/* Section Header with Enhanced Design */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 relative">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl"></div>
+              <h2 className="text-5xl md:text-6xl font-black text-orange-500 mb-4 md:mb-0 tracking-tight relative">Solutions</h2>
+            </div>
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-2xl blur-xl"></div>
+              <h3 className="text-4xl md:text-5xl font-black text-gray-900 text-center md:text-right max-w-3xl leading-tight relative">
+                Shaping Tomorrow with <span className="text-orange-500 relative">
+                  Intelligence
+                  <motion.div
+                    className="absolute -bottom-2 left-0 w-full h-1 bg-orange-500"
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </span> Today
+              </h3>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          {/* Solutions Grid with Enhanced Card Design */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
             {[
               { 
                 title: "SPOCARE", 
@@ -471,7 +536,7 @@ function App() {
               { 
                 title: "SPORTIFY IQ", 
                 img: solution2,
-                description: "Transforming sports analytics with cutting-edge AI technology. From performance tracking to predictive analytics, we help teams and athletes achieve their peak potential through data-driven insights.",
+                description: "Sportify is a comprehensive mobile application designed to support athletes and active individuals in their physical therapy and rehabilitation journeys. Whether you're recovering from an injury or aiming to enhance your performance, Sportify offers a suite of tools to assist you.",
                 features: [
                   "Performance Analytics",
                   "Injury Prevention",
@@ -482,7 +547,7 @@ function App() {
               { 
                 title: "AESTHETIC AI", 
                 img: solution3,
-                description: "Redefining aesthetic procedures with AI-driven analysis and recommendations. Our platform provides personalized treatment plans and outcome predictions for enhanced aesthetic results.",
+                description: "Aesthetics AI is an innovative application that leverages artificial intelligence to help users enhance their visual presence—whether it's personal style, interior design, branding, or digital content. By combining cutting-edge AI with principles of aesthetics, the app offers smart, tailored suggestions that elevate the look and feel of whatever you're working on.",
                 features: [
                   "Treatment Planning",
                   "Outcome Prediction",
@@ -493,36 +558,85 @@ function App() {
             ].map((s, i) => (
               <div 
                 key={i} 
-                className="group relative bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-2xl transition-all duration-300" 
+                className="group relative bg-gradient-to-br from-orange-50/80 to-orange-100/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center hover:shadow-3xl transition-all duration-300 h-full flex flex-col transform hover:-translate-y-2 border border-orange-100/50" 
                 data-aos="zoom-in" 
                 data-aos-delay={i * 100}
+                onClick={() => {
+                  if (window.innerWidth < 768) {
+                    setActiveCard(activeCard === i ? null : i);
+                  }
+                }}
               >
-                {/* Card Content */}
-                <div className="relative z-10">
-                  <h4 className="text-2xl font-bold text-orange-500 mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]">{s.title}</h4>
-                  <div className="relative h-48 mb-6">
+                {/* Card Glow Effect */}
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-3xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                
+                {/* Desktop View */}
+                <div className="hidden md:block flex-1 flex flex-col">
+                  <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]`}>{s.title}</h4>
+                  <div className="relative h-40 mb-5 flex-shrink-0">
                     <img 
                       src={s.img} 
                       alt={s.title} 
                       className="w-full h-full object-contain group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" 
                     />
                   </div>
+                  {/* Desktop Hover Reveal Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/95 to-orange-600/95 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20">
+                    <motion.p 
+                      className="text-white text-sm leading-relaxed"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ 
+                        duration: 0.5,
+                        delay: 0.2,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {s.description}
+                    </motion.p>
+                  </div>
                 </div>
 
-                {/* Hover Reveal Overlay */}
-                <div className="absolute inset-0 bg-orange-500/90 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20">
-                  <motion.p 
-                    className="text-white text-sm"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ 
-                      duration: 0.5,
-                      delay: 0.2,
-                      ease: "easeOut"
-                    }}
+                {/* Mobile View */}
+                <div className="md:hidden flex-1 flex flex-col">
+                  <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 transition-all duration-300 ${
+                    activeCard === i ? 'opacity-0' : 'opacity-100'
+                  }`}>{s.title}</h4>
+                  <div className="relative h-40 mb-5 flex-shrink-0">
+                    <img 
+                      src={s.img} 
+                      alt={s.title} 
+                      className={`w-full h-full object-contain transition-all duration-300 ${
+                        activeCard === i ? 'opacity-0' : 'opacity-100'
+                      }`}
+                    />
+                  </div>
+                  {/* Mobile Tap Reveal Overlay */}
+                  <div 
+                    className={`absolute inset-0 bg-gradient-to-br from-orange-500/95 to-orange-600/95 rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20 ${
+                      activeCard === i ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                    }`}
                   >
-                    {s.description}
-                  </motion.p>
+                    <motion.p 
+                      className="text-white text-sm leading-relaxed"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={activeCard === i ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ 
+                        duration: 0.5,
+                        delay: 0.2,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {s.description}
+                    </motion.p>
+                  </div>
+                </div>
+
+                {/* Mobile Touch Indicator */}
+                <div className="absolute bottom-4 right-4 md:hidden">
+                  <span className="text-sm text-orange-500 bg-white/90 px-3 py-1.5 rounded-full shadow-lg">
+                    {activeCard === i ? 'Tap to close' : 'Tap to view details'}
+                  </span>
                 </div>
               </div>
             ))}
@@ -531,500 +645,282 @@ function App() {
       </section>
 
       {/* TECHNOLOGY SECTION */}
-      <section id="technology" className={`relative ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-8 md:py-24 px-2 md:px-16 overflow-hidden w-full`} ref={techSectionRef}>
-        {/* Modern Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
-        {/* Decorative Left Side Design - Hidden on Mobile */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-96 h-[600px] opacity-60 hidden md:block">
-          <div className="relative w-full h-full">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent"></div>
-            
-            {/* Rotating Hexagons */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={`left-hex-${i}`}
-                  className="absolute inset-0 border-2 border-orange-400/20"
-                  style={{
-                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                    transform: `scale(${1 - i * 0.15}) rotate(${i * 45}deg)`
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Floating Particles */}
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={`left-particle-${i}`}
-                className="absolute w-2 h-2 bg-orange-400/30 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`
-                }}
-                animate={{
-                  y: [0, -30, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.5, 1]
-                }}
-                transition={{
-                  duration: 2 + Math.random(),
-                  repeat: Infinity,
-                  delay: i * 0.1
-                }}
-              />
-            ))}
-
-            {/* Energy Lines */}
-            {[...Array(8)].map((_, i) => (
-              <motion.div
-                key={`left-line-${i}`}
-                className="absolute h-1 bg-gradient-to-r from-orange-400/20 to-transparent"
-                style={{
-                  left: '0',
-                  top: `${i * 12}%`,
-                  width: '100%',
-                  transform: `rotate(${i * 5}deg)`
-                }}
-                animate={{
-                  opacity: [0.2, 0.5, 0.2],
-                  scaleX: [0.8, 1.2, 0.8]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.2
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Decorative Right Side Design - Hidden on Mobile */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-[600px] opacity-60 hidden md:block">
-          <div className="relative w-full h-full">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-l from-orange-500/5 to-transparent"></div>
-            
-            {/* Rotating Circles */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={`right-circle-${i}`}
-                  className="absolute inset-0 rounded-full border-2 border-orange-400/20"
-                  style={{
-                    transform: `scale(${1 - i * 0.15}) rotate(${i * 30}deg)`
-                  }}
-                />
-              ))}
-            </motion.div>
-
-            {/* Floating Energy Orbs */}
-            {[...Array(15)].map((_, i) => (
-              <motion.div
-                key={`right-orb-${i}`}
-                className="absolute w-3 h-3 bg-orange-400/30 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.2, 1],
-                  x: [0, Math.random() * 20 - 10, 0]
-                }}
-                transition={{
-                  duration: 2 + Math.random(),
-                  repeat: Infinity,
-                  delay: i * 0.1
-                }}
-              >
-                <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
-              </motion.div>
-            ))}
-
-            {/* Energy Waves */}
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={`right-wave-${i}`}
-                className="absolute h-1 bg-gradient-to-l from-orange-400/20 to-transparent"
-                style={{
-                  right: '0',
-                  top: `${i * 15}%`,
-                  width: '100%',
-                  transform: `rotate(${i * -5}deg)`
-                }}
-                animate={{
-                  opacity: [0.2, 0.5, 0.2],
-                  scaleX: [0.8, 1.2, 0.8]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.2
-                }}
-              />
-            ))}
-
-            {/* Pulsing Core */}
-            <motion.div
-              className="absolute top-1/2 right-1/2 w-32 h-32 -translate-y-1/2 translate-x-1/2"
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.3, 0.5, 0.3]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <div className="absolute inset-0 bg-orange-400/20 rounded-full blur-xl"></div>
-              <div className="absolute inset-4 bg-orange-400/30 rounded-full blur-lg"></div>
-              <div className="absolute inset-8 bg-orange-400/40 rounded-full"></div>
-            </motion.div>
-          </div>
-        </div>
-
-        <div className="w-full max-w-7xl mx-auto relative">
-          {/* Modern Section Header - Mobile Optimized */}
-          <div className="flex flex-col items-center text-center mb-8 md:mb-20 px-2 md:px-0" data-aos="fade-up" data-aos-duration="1000">
-            <div className="inline-block bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-4 md:px-8 py-2 md:py-4 rounded-full mb-4 md:mb-6">
-              <h2 className="text-2xl md:text-5xl font-black text-orange-500">Technology</h2>
+      <section id="technology" className="relative h-screen flex items-center overflow-hidden w-full pt-16" ref={techSectionRef}>
+        <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 relative h-full flex flex-col">
+          {/* Modern Section Header with Enhanced Design */}
+          <div className="flex flex-col items-center text-center pt-4 mb-4" data-aos="fade-up">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl"></div>
+              <div className="inline-block bg-gradient-to-r from-orange-500/20 to-orange-600/20 px-6 py-2 rounded-2xl backdrop-blur-sm relative">
+                <h2 className="text-4xl md:text-5xl font-black text-orange-500">Technology</h2>
+              </div>
             </div>
-            <p className={`text-sm md:text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} max-w-3xl mx-auto leading-relaxed`}>
-              At the core of our platform lies a fusion of industry‑grade LLMs, optimized inference pipelines, and proprietary deployment frameworks.
+            <p className={`mt-3 text-base md:text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'} max-w-2xl`}>
+              Harnessing the power of artificial intelligence to transform industries
             </p>
           </div>
 
-          {/* Modern Animation - Mobile Optimized */}
-          <div className="flex flex-col items-center justify-center mb-8 md:mb-24 px-2 md:px-0">
-            <div 
-              className="relative w-56 h-56 md:w-96 md:h-96 cursor-pointer select-none group"
-              onClick={() => setEiSplit((v) => !v)}
-            >
-              {/* Main Circle */}
-              <div className="absolute inset-0">
-                {/* Outer Circle */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-300/20 to-orange-400/20"
-                  animate={{
-                    scale: [1, 1.02, 1],
-                    opacity: [0.8, 1, 0.8]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/10 rounded-full blur-xl"></div>
-                </motion.div>
-
-                {/* Inner Circle */}
-                <motion.div
-                  className="absolute inset-8 rounded-full bg-gradient-to-br from-orange-300/10 to-orange-400/10"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                    opacity: [0.6, 0.8, 0.6]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/10 rounded-full blur-lg"></div>
-                </motion.div>
-
-                {/* Rotating Rings */}
-                <motion.div
-                  className="absolute inset-0"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                >
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={`ring-${i}`}
-                      className="absolute inset-0 rounded-full border-2 border-orange-400/20"
-                      style={{
-                        transform: `rotate(${i * 60}deg) scale(${1 - i * 0.1})`
-                      }}
-                    />
-                  ))}
-                </motion.div>
-              </div>
-
-              {/* EI Letters */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  className="relative flex items-center justify-center"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={isTechSectionVisible ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
-                  transition={{ duration: 1, delay: 0.4 }}
-                >
-                  {/* Power Ring Effect */}
-                  <AnimatePresence>
-                    {!eiSplit && isTechSectionVisible && (
-                      <>
-                        {/* Outer Power Ring */}
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1.2, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-10"
-                        >
-                          <div className="absolute inset-0 rounded-full border-4 border-orange-400/30 blur-sm"></div>
-                          <div className="absolute inset-0 rounded-full border-2 border-orange-400/50"></div>
-                        </motion.div>
-
-                        {/* Spark Ring */}
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0.8, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-20"
-                        >
-                          {[...Array(48)].map((_, i) => (
-                            <motion.div
-                              key={`power-spark-${i}`}
-                              className="absolute w-1.5 h-1.5 bg-orange-400 rounded-full"
-                              style={{
-                                left: '50%',
-                                top: '50%',
-                                transform: `translate(-50%, -50%) rotate(${i * 7.5}deg)`
-                              }}
-                              animate={{
-                                scale: [0, 1.5, 0],
-                                opacity: [0, 1, 0],
-                                x: [
-                                  Math.cos(i * Math.PI / 24) * 120,
-                                  Math.cos(i * Math.PI / 24) * 100,
-                                  Math.cos(i * Math.PI / 24) * 120
-                                ],
-                                y: [
-                                  Math.sin(i * Math.PI / 24) * 120,
-                                  Math.sin(i * Math.PI / 24) * 100,
-                                  Math.sin(i * Math.PI / 24) * 120
-                                ]
-                              }}
-                              transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                delay: i * 0.02,
-                                ease: "easeInOut"
-                              }}
-                            >
-                              <div className="absolute inset-0 bg-white/80 rounded-full blur-sm"></div>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-
-                        {/* Energy Burst */}
-                        <motion.div
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0, opacity: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className="absolute inset-0 z-10"
-                        >
-                          {[...Array(24)].map((_, i) => (
-                            <motion.div
-                              key={`energy-burst-${i}`}
-                              className="absolute w-1 h-1 bg-orange-400 rounded-full"
-                              style={{
-                                left: '50%',
-                                top: '50%',
-                                transform: `translate(-50%, -50%) rotate(${i * 15}deg)`
-                              }}
-                              animate={{
-                                scale: [0, 2, 0],
-                                opacity: [0, 1, 0],
-                                x: [
-                                  0,
-                                  Math.cos(i * Math.PI / 12) * 80,
-                                  Math.cos(i * Math.PI / 12) * 120
-                                ],
-                                y: [
-                                  0,
-                                  Math.sin(i * Math.PI / 12) * 80,
-                                  Math.sin(i * Math.PI / 12) * 120
-                                ]
-                              }}
-                              transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                                delay: i * 0.05,
-                                ease: "easeOut"
-                              }}
-                            >
-                              <div className="absolute inset-0 bg-white/50 rounded-full blur-sm"></div>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      </>
-                    )}
-                  </AnimatePresence>
-
-                  <motion.span
-                    initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={
-                      eiSplit ? { x: -170, rotate: -15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
-                    }
-                    transition={{ 
-                      type: 'spring', 
-                      stiffness: 100, 
-                      damping: 20, 
-                      duration: 1.5,
-                      delay: 0.6 
-                    }}
-                    className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    E
-                  </motion.span>
-                  <motion.span
-                    initial={{ x: 0, rotate: 0, opacity: 0 }}
-                    animate={
-                      eiSplit ? { x: 135, rotate: 15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
-                    }
-                    transition={{ 
-                      type: 'spring', 
-                      stiffness: 100, 
-                      damping: 20, 
-                      duration: 1.5,
-                      delay: 0.6 
-                    }}
-                    className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    I
-                  </motion.span>
-                </motion.div>
-              </div>
-
-              {/* Floating Text */}
-              <AnimatePresence>
-                {eiSplit && isTechSectionVisible && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ 
-                      duration: 1,
-                      delay: 0.8,
-                      ease: "easeOut"
-                    }}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
-                  >
-                    <div className="bg-white/95 backdrop-blur-sm px-8 py-4 rounded-full shadow-xl">
-                      <span className="text-2xl font-semibold text-gray-800 whitespace-nowrap">
-                        Enable Intelligence
-                      </span>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Enhanced Features Grid - Mobile Optimized */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 px-2 md:px-0">
-            {[
-              { 
-                icon: aiIcon, 
-                label: "AI Transformation", 
-                desc: "We turn raw data into predictive power through advanced machine learning algorithms and neural networks.",
-                gradient: "from-orange-500/10 to-orange-600/10"
-              },
-              { 
-                icon: customizedIcon, 
-                label: "Customized AI Solutions", 
-                desc: "Tailored pipelines designed specifically for your industry's unique challenges and requirements.",
-                gradient: "from-orange-500/10 to-orange-600/10"
-              },
-              { 
-                icon: scalableIcon, 
-                label: "Scalable Solutions", 
-                desc: "Enterprise-grade deployment frameworks that grow with your business needs.",
-                gradient: "from-orange-500/10 to-orange-600/10"
-              },
-            ].map((t, i) => (
-              <motion.div 
-                key={i} 
-                className="group relative bg-white rounded-xl md:rounded-3xl shadow-xl p-4 md:p-8 flex flex-col items-center text-center hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.8, delay: 0.2 * i }}
+          {/* Main Content Grid - Adjusted for better alignment and spacing */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto flex-1">
+            {/* Left Side: Main Animation - Adjusted position */}
+            <div className="flex justify-center lg:justify-start lg:pl-12">
+              <div 
+                className="relative w-72 h-72 md:w-96 md:h-96 cursor-pointer select-none group"
+                onClick={() => setEiSplit((v) => !v)}
               >
-                {/* Enhanced Background Gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} rounded-xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
-                
-                {/* Enhanced Content */}
-                <div className="relative z-10">
-                  <div className="w-14 h-14 md:w-24 md:h-24 mb-4 md:mb-8 rounded-lg md:rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 p-3 md:p-6 transform group-hover:scale-110 transition-transform duration-700">
-                    <img src={t.icon} alt={t.label} className="w-full h-full object-contain filter brightness-0 invert" />
-                  </div>
-                  <h3 className="font-bold text-lg md:text-2xl mb-2 md:mb-4 text-gray-900">{t.label}</h3>
-                  <p className="text-xs md:text-base text-gray-600 leading-relaxed">{t.desc}</p>
+                {/* Enhanced Main Circle */}
+                <div className="absolute inset-0">
+                  {/* Outer Circle with Enhanced Glow */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-300/30 to-orange-400/30"
+                    animate={{
+                      scale: [1, 1.02, 1],
+                      opacity: [0.8, 1, 0.8]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-white/20 rounded-full blur-xl"></div>
+                    <div className="absolute inset-0 rounded-full border-2 border-orange-400/20"></div>
+                  </motion.div>
+
+                  {/* Inner Circle with Enhanced Effects */}
+                  <motion.div
+                    className="absolute inset-8 rounded-full bg-gradient-to-br from-orange-300/20 to-orange-400/20"
+                    animate={{
+                      scale: [1, 1.05, 1],
+                      opacity: [0.6, 0.8, 0.6]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-white/20 rounded-full blur-lg"></div>
+                    <div className="absolute inset-0 rounded-full border border-orange-400/30"></div>
+                  </motion.div>
+
+                  {/* Enhanced Rotating Rings */}
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  >
+                    {[...Array(3)].map((_, i) => (
+                      <motion.div
+                        key={`ring-${i}`}
+                        className="absolute inset-0 rounded-full border-2 border-orange-400/30"
+                        style={{
+                          transform: `rotate(${i * 60}deg) scale(${1 - i * 0.1})`
+                        }}
+                      />
+                    ))}
+                  </motion.div>
                 </div>
 
-                {/* Enhanced Hover Effect Line */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-0 group-hover:w-1/2 group-hover:opacity-100 transition-all duration-700"></div>
-              </motion.div>
-            ))}
-          </div>
+                {/* EI Letters with Enhanced Animation */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.div
+                    className="relative flex items-center justify-center"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={isTechSectionVisible ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
+                    transition={{ duration: 1, delay: 0.4 }}
+                  >
+                    {/* Power Ring Effect */}
+                    <AnimatePresence>
+                      {!eiSplit && isTechSectionVisible && (
+                        <>
+                          {/* Enhanced Outer Power Ring */}
+                          <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1.2, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 z-10"
+                          >
+                            <div className="absolute inset-0 rounded-full border-4 border-orange-400/40 blur-sm"></div>
+                            <div className="absolute inset-0 rounded-full border-2 border-orange-400/60"></div>
+                          </motion.div>
 
-          {/* Enhanced Additional Info - Mobile Optimized */}
-          <motion.div 
-            className="mt-8 md:mt-20 text-center px-2 md:px-0"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <div className={`inline-block px-4 md:px-8 py-2 md:py-4 rounded-full ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-orange-500/40 to-orange-600/40' 
-                : 'bg-gradient-to-r from-orange-500/20 to-orange-600/20'
-            }`}>
-              <p className={`text-sm md:text-lg max-w-3xl mx-auto ${
-                isDarkMode ? 'text-gray-100' : 'text-gray-800'
-              }`}>
-                Our technology stack is constantly evolving, incorporating the latest advancements in AI and machine learning to deliver cutting-edge solutions.
-              </p>
+                          {/* Enhanced Spark Ring */}
+                          <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ duration: 1 }}
+                            className="absolute inset-0 z-20"
+                          >
+                            {[...Array(48)].map((_, i) => (
+                              <motion.div
+                                key={`power-spark-${i}`}
+                                className="absolute w-1.5 h-1.5 bg-orange-400 rounded-full"
+                                style={{
+                                  left: '50%',
+                                  top: '50%',
+                                  transform: `translate(-50%, -50%) rotate(${i * 7.5}deg)`
+                                }}
+                                animate={{
+                                  scale: [0, 1.5, 0],
+                                  opacity: [0, 1, 0],
+                                  x: [
+                                    Math.cos(i * Math.PI / 24) * 120,
+                                    Math.cos(i * Math.PI / 24) * 100,
+                                    Math.cos(i * Math.PI / 24) * 120
+                                  ],
+                                  y: [
+                                    Math.sin(i * Math.PI / 24) * 120,
+                                    Math.sin(i * Math.PI / 24) * 100,
+                                    Math.sin(i * Math.PI / 24) * 120
+                                  ]
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  delay: i * 0.02,
+                                  ease: "easeInOut"
+                                }}
+                              >
+                                <div className="absolute inset-0 bg-white/80 rounded-full blur-sm"></div>
+                              </motion.div>
+                            ))}
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+
+                    <motion.span
+                      initial={{ x: 0, rotate: 0, opacity: 0 }}
+                      animate={
+                        eiSplit ? { x: -170, rotate: -15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
+                      }
+                      transition={{ 
+                        type: 'spring', 
+                        stiffness: 100, 
+                        damping: 20, 
+                        duration: 1.5,
+                        delay: 0.6 
+                      }}
+                      className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
+                      style={{ fontFamily: 'inherit' }}
+                    >
+                      E
+                    </motion.span>
+                    <motion.span
+                      initial={{ x: 0, rotate: 0, opacity: 0 }}
+                      animate={
+                        eiSplit ? { x: 135, rotate: 15, opacity: 1 } : { x: 0, rotate: 0, opacity: 1 }
+                      }
+                      transition={{ 
+                        type: 'spring', 
+                        stiffness: 100, 
+                        damping: 20, 
+                        duration: 1.5,
+                        delay: 0.6 
+                      }}
+                      className="text-9xl font-black text-orange-500 drop-shadow-lg z-30"
+                      style={{ fontFamily: 'inherit' }}
+                    >
+                      I
+                    </motion.span>
+                  </motion.div>
+                </div>
+
+                {/* Enhanced Floating Text */}
+                <AnimatePresence>
+                  {eiSplit && isTechSectionVisible && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ 
+                        duration: 1,
+                        delay: 0.8,
+                        ease: "easeOut"
+                      }}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+                    >
+                      <div className="bg-white/95 backdrop-blur-sm px-8 py-4 rounded-full shadow-xl">
+                        <span className="text-2xl font-semibold text-gray-800 whitespace-nowrap">
+                          Enable Intelligence
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
-          </motion.div>
+
+            {/* Right Side: Features Grid - Adjusted for better content visibility */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {[
+                { 
+                  icon: aiIcon, 
+                  label: "AI Transformation", 
+                  desc: "We turn raw data into predictive power through advanced machine learning algorithms.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                },
+                { 
+                  icon: customizedIcon, 
+                  label: "Customized AI Solutions", 
+                  desc: "Tailored pipelines designed for your industry's unique challenges and requirements.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                },
+                { 
+                  icon: scalableIcon, 
+                  label: "Scalable Solutions", 
+                  desc: "Enterprise-grade deployment frameworks that grow with your business needs.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                },
+                {
+                  icon: aiIcon,
+                  label: "Real-time Analytics",
+                  desc: "Instant insights and decision-making support through powerful data processing.",
+                  gradient: "from-orange-500/20 to-orange-600/20"
+                }
+              ].map((t, i) => (
+                <motion.div 
+                  key={i} 
+                  className="group relative bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isTechSectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.8, delay: 0.2 * i }}
+                >
+                  {/* Background Gradient */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10 h-full flex flex-col">
+                    <motion.div 
+                      className="w-14 h-14 md:w-16 md:h-16 mb-4 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 p-2 transform group-hover:scale-110 transition-transform duration-500"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.8 }}
+                    >
+                      <img src={t.icon} alt={t.label} className="w-full h-full object-contain filter brightness-0 invert" />
+                    </motion.div>
+                    <h3 className="font-bold text-lg md:text-xl mb-2 text-gray-900">{t.label}</h3>
+                    <p className="text-gray-600 text-base leading-relaxed">{t.desc}</p>
+                  </div>
+
+                  {/* Hover Effects */}
+                  <div className="absolute inset-0 rounded-xl border-2 border-orange-500/0 group-hover:border-orange-500/20 transition-colors duration-500"></div>
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-orange-500 to-orange-600 group-hover:w-1/2 transition-all duration-500"></div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* RESOURCES SECTION */}
-      <section id="resources" className={`${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'} py-24 px-4 md:px-16 relative overflow-hidden`}>
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
+      <section id="resources" className="py-24 px-4 md:px-16 relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
@@ -1143,35 +1039,11 @@ function App() {
               </motion.div>
             ))}
           </div>
-
-          {/* Newsletter Subscription */}
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl p-8 md:p-12 text-white" data-aos="fade-up">
-            <div className="max-w-3xl mx-auto text-center">
-              <h3 className="text-3xl font-bold mb-4">Stay Updated</h3>
-              <p className="text-white/80 mb-8">Subscribe to our newsletter for the latest insights and updates in AI technology</p>
-              <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="flex-1 px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:border-white/40"
-                />
-                <button className="bg-white text-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1">
-                  Subscribe
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
       {/* FAQS SECTION */}
-      <section id="faqs" className={`${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-orange-500 to-orange-600'} py-24 px-4 md:px-16 relative text-white overflow-hidden`}>
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-        </div>
-
+      <section id="faqs" className={`${isDarkMode ? 'bg-orange-500/90' : 'bg-orange-500'} py-24 px-4 md:px-16 relative text-white overflow-hidden backdrop-blur-sm`}>
         <div className="max-w-7xl mx-auto relative">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
@@ -1256,7 +1128,7 @@ function App() {
       </section>
 
       {/* CONTACT SECTION */}
-      <section id="contact" className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} py-32 px-4 md:px-16`}>
+      <section id="contact" className={`${isDarkMode ? 'bg-gray-800/90' : 'bg-white/90'} py-32 px-4 md:px-16 backdrop-blur-sm`}>
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16" data-aos="fade-up">
@@ -1360,72 +1232,29 @@ function App() {
                 }`}>
                   <span className="flex items-center">
                     <svg className="w-6 h-6 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Quick Contact Info
+                    Stay Updated
                   </span>
                 </h3>
                 <div className="space-y-6">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      isDarkMode ? 'bg-orange-500/20' : 'bg-orange-500/10'
-                    }`}>
-                      <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${
-                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                      }`}>Phone</p>
-                      <p className={`text-lg font-semibold ${
-                        isDarkMode ? 'text-gray-200' : 'text-gray-900'
-                      }`}>+91 82972 11188</p>
-                    </div>
+                  <p className={`text-lg ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
+                    Subscribe to our newsletter for the latest insights and updates in AI technology
+                  </p>
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <input 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      className={`flex-1 px-6 py-4 rounded-xl transition-all ${
+                        isDarkMode 
+                          ? `${contactFormInputStyles.dark.backgroundColor} ${contactFormInputStyles.dark.borderColor} ${contactFormInputStyles.dark.textColor} ${contactFormInputStyles.dark.placeholderColor}`
+                          : `${contactFormInputStyles.light.backgroundColor} ${contactFormInputStyles.light.borderColor} ${contactFormInputStyles.light.textColor} ${contactFormInputStyles.light.placeholderColor}`
+                      }`}
+                    />
+                    <button className="bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1">
+                      Subscribe
+                    </button>
                   </div>
-
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      isDarkMode ? 'bg-orange-500/20' : 'bg-orange-500/10'
-                    }`}>
-                      <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${
-                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                      }`}>Email</p>
-                      <p className={`text-lg font-semibold ${
-                        isDarkMode ? 'text-gray-200' : 'text-gray-900'
-                      }`}>support@enableintelligence.com</p>
-                    </div>
-                  </div>
-
-                  {/* Office Hours */}
-                  <div className={`p-6 rounded-xl ${
-                    isDarkMode ? 'bg-gray-800' : 'bg-orange-50'
-                  }`}>
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                        isDarkMode ? 'bg-orange-500/30' : 'bg-orange-500/20'
-                      }`}>
-                        <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className={`text-sm font-medium ${
-                          isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                        }`}>Office Hours</p>
-                        <p className={`text-lg font-semibold ${
-                          isDarkMode ? 'text-gray-200' : 'text-gray-900'
-                        }`}>Mon - Fri: 9:00 AM - 6:00 PM EST</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Social Links */}
                   <div className="flex justify-center space-x-4 pt-4">
                     <a 
                       href="#" 
@@ -1510,7 +1339,7 @@ function App() {
                         {/* Live Video Effect Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent animate-pulse"></div>
-                      </div>
+                  </div>
 
                       {/* Status Badge with Enhanced Animation */}
                       <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-xl">
@@ -1557,10 +1386,10 @@ function App() {
       </section>
 
       {/* FOOTER */}
-      <footer className={`${isDarkMode ? 'bg-gray-900' : 'bg-gray-900'} text-white py-6`}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+      <footer className={`${isDarkMode ? 'bg-gray-900/90' : 'bg-gray-900/90'} text-white py-6 backdrop-blur-sm`}>
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center text-sm"
         >
@@ -1606,18 +1435,18 @@ function App() {
                     x: direction.from === 'left' ? '-100%' : direction.from === 'right' ? '100%' : 0,
                     y: direction.from === 'top' ? '-100%' : direction.from === 'bottom' ? '100%' : 0
                   }}
-                  animate={{
+                      animate={{
                     scale: [0, 1],
                     opacity: [0, 0.9, 0],
                     x: 0,
                     y: 0
                   }}
-                  transition={{
+                      transition={{ 
                     duration: 1.2,
                     delay: direction.delay,
-                    ease: "easeOut"
-                  }}
-                >
+                        ease: "easeOut"
+                      }}
+                    >
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 animate-pulse"></div>
                 </motion.div>
 
@@ -1751,7 +1580,7 @@ function App() {
                           Math.sin(i * Math.PI / 12) * 300
                         ]
                       }}
-                      transition={{
+                      transition={{ 
                         duration: 1.5,
                         delay: 1.5 + i * 0.05,
                         ease: "easeOut"
@@ -1787,7 +1616,7 @@ function App() {
                   </motion.div>
                 ))}
               </motion.div>
-            </div>
+                  </div>
           </motion.div>
         ) : (
           <motion.div
@@ -1800,9 +1629,10 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+                </div>
   );
 }
 
 export default App;
+
 
