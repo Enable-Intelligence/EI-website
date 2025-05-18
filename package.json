@@ -13,6 +13,7 @@
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.1.6",
     "aos": "^2.3.4",
+    "classnames": "^2.5.1",
     "framer-motion": "^12.11.0",
     "lucide-react": "^0.509.0",
     "react": "^19.1.0",
