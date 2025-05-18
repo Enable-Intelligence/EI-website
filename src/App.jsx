@@ -8,9 +8,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import LoadingScreen from './components/layout/LoadingScreen';
 import Home from './components/sections/Home';
-import solution1 from "./assets/solution1.png";
-import solution2 from "./assets/solution2.png";
-import solution3 from "./assets/solution3.png";
+import Solutions from './components/sections/Solutions';
 import aiIcon from "./assets/icons/ai-transformation.svg";
 import customizedIcon from "./assets/icons/customized-ai-solutions.svg";
 import scalableIcon from "./assets/icons/scalable-solutions.svg";
@@ -56,7 +54,6 @@ function App() {
   const [eiSplit, setEiSplit] = useState(true);
   const [isTechSectionVisible, setIsTechSectionVisible] = useState(false);
   const techSectionRef = useRef(null);
-  const [activeCard, setActiveCard] = useState(null);
   const [formStatus, setFormStatus] = useState({ loading: false, success: false, error: null });
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
@@ -204,154 +201,7 @@ function App() {
       <Home isDarkMode={isDarkMode} isMobile={isMobile} />
 
       {/* SOLUTIONS SECTION */}
-      <section id="solutions" className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="w-full max-w-[90rem] mx-auto px-4 md:px-8 py-8 relative z-10">
-          {/* Section Header with Enhanced Design */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12 relative">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl"></div>
-              <h2 className="text-5xl md:text-6xl font-black text-orange-500 mb-4 md:mb-0 tracking-tight relative">Solutions</h2>
-            </div>
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-2xl blur-xl"></div>
-              <h3 className="text-4xl md:text-5xl font-black text-gray-900 text-center md:text-right max-w-3xl leading-tight relative">
-                Shaping Tomorrow with <span className="text-orange-500 relative">
-                  Intelligence
-                  <motion.div
-                    className="absolute -bottom-2 left-0 w-full h-1 bg-orange-500"
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                  />
-                </span> Today
-              </h3>
-            </div>
-          </div>
-
-          {/* Solutions Grid with Enhanced Card Design */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-            {[
-              { 
-                title: "SPOCARE", 
-                img: solution1,
-                description: "Revolutionizing healthcare through AI-powered diagnostics and patient care management. Our platform combines advanced machine learning with medical expertise to deliver accurate, timely, and personalized healthcare solutions.",
-                features: [
-                  "AI-Powered Diagnostics",
-                  "Patient Care Management",
-                  "Real-time Analytics",
-                  "Secure Data Handling"
-                ]
-              },
-              { 
-                title: "SPORTIFY IQ", 
-                img: solution2,
-                description: "Sportify is a comprehensive mobile application designed to support athletes and active individuals in their physical therapy and rehabilitation journeys. Whether you're recovering from an injury or aiming to enhance your performance, Sportify offers a suite of tools to assist you.",
-                features: [
-                  "Performance Analytics",
-                  "Injury Prevention",
-                  "Team Strategy Optimization",
-                  "Real-time Tracking"
-                ]
-              },
-              { 
-                title: "AESTHETIC AI", 
-                img: solution3,
-                description: "Aesthetics AI is an innovative application that leverages artificial intelligence to help users enhance their visual presence—whether it's personal style, interior design, branding, or digital content. By combining cutting-edge AI with principles of aesthetics, the app offers smart, tailored suggestions that elevate the look and feel of whatever you're working on.",
-                features: [
-                  "Treatment Planning",
-                  "Outcome Prediction",
-                  "Progress Tracking",
-                  "Personalized Recommendations"
-                ]
-              },
-            ].map((s, i) => (
-              <div 
-                key={i} 
-                className="group relative bg-gradient-to-br from-orange-50/80 to-orange-100/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center hover:shadow-3xl transition-all duration-300 h-full flex flex-col transform hover:-translate-y-2 border border-orange-100/50" 
-                data-aos="zoom-in" 
-                data-aos-delay={i * 100}
-                onClick={() => {
-                  if (window.innerWidth < 768) {
-                    setActiveCard(activeCard === i ? null : i);
-                  }
-                }}
-              >
-                {/* Card Glow Effect */}
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-3xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                
-                {/* Desktop View */}
-                <div className="hidden md:block flex-1 flex flex-col">
-                  <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]`}>{s.title}</h4>
-                  <div className="relative h-40 mb-5 flex-shrink-0">
-                    <img 
-                      src={s.img} 
-                      alt={s.title} 
-                      className="w-full h-full object-contain group-hover:opacity-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" 
-                    />
-                  </div>
-                  {/* Desktop Hover Reveal Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/95 to-orange-600/95 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20">
-                    <motion.p 
-                      className="text-white text-sm leading-relaxed"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ 
-                        duration: 0.5,
-                        delay: 0.2,
-                        ease: "easeOut"
-                      }}
-                    >
-                      {s.description}
-                    </motion.p>
-                  </div>
-                </div>
-
-                {/* Mobile View */}
-                <div className="md:hidden flex-1 flex flex-col">
-                  <h4 className={`text-2xl font-bold ${s.title === "SPORTIFY IQ" ? "text-orange-500" : "text-black"} mb-4 transition-all duration-300 ${
-                    activeCard === i ? 'opacity-0' : 'opacity-100'
-                  }`}>{s.title}</h4>
-                  <div className="relative h-40 mb-5 flex-shrink-0">
-                    <img 
-                      src={s.img} 
-                      alt={s.title} 
-                      className={`w-full h-full object-contain transition-all duration-300 ${
-                        activeCard === i ? 'opacity-0' : 'opacity-100'
-                      }`}
-                    />
-                  </div>
-                  {/* Mobile Tap Reveal Overlay */}
-                  <div 
-                    className={`absolute inset-0 bg-gradient-to-br from-orange-500/95 to-orange-600/95 rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] flex items-center justify-center p-6 z-20 ${
-                      activeCard === i ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                    }`}
-                  >
-                    <motion.p 
-                      className="text-white text-sm leading-relaxed"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={activeCard === i ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                      transition={{ 
-                        duration: 0.5,
-                        delay: 0.2,
-                        ease: "easeOut"
-                      }}
-                    >
-                      {s.description}
-                    </motion.p>
-                  </div>
-                </div>
-
-                {/* Mobile Touch Indicator */}
-                <div className="absolute bottom-4 right-4 md:hidden">
-                  <span className="text-sm text-orange-500 bg-white/90 px-3 py-1.5 rounded-full shadow-lg">
-                    {activeCard === i ? 'Tap to close' : 'Tap to view details'}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Solutions isMobile={isMobile} />
 
       {/* TECHNOLOGY SECTION */}
       <section id="technology" className="relative min-h-screen flex items-center overflow-hidden w-full pt-20 pb-12 md:pt-24 md:pb-16" ref={techSectionRef}>
