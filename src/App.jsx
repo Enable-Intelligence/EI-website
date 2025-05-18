@@ -180,27 +180,46 @@ function App() {
       console.log('Checking environment variables:', {
         hasPublicKey: !!import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
         hasServiceId: !!import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        hasTemplateId: !!import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+        hasRecieveTemplateId: !!import.meta.env.VITE_EMAILJS_RECIEVE_TEMPLATE_ID,
+        hasSendTemplateId: !!import.meta.env.VITE_EMAILJS_SEND_TEMPLATE_ID
       });
 
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        message: formData.message,
+      const customerEmail = formData.email;
+      const customerName = formData.name;
+      const customerMessage = formData.message;
+
+      const receiveTemplateParams = {
+        from_name: customerName,
+        from_email: customerEmail,
+        message: customerMessage,
         to_email: "admin@enableintelligence.com",
-        reply_to: formData.email,
       };
 
-      const response = await emailjs.send(
+      const reciveResponse = await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        templateParams,
+        import.meta.env.VITE_EMAILJS_RECIEVE_TEMPLATE_ID,
+        receiveTemplateParams,
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
-      console.log('EmailJS Response:', response);
+      console.log('EmailJS Recive Response:', reciveResponse);
       setFormStatus({ loading: false, success: true, error: null });
       setFormData({ name: '', email: '', message: '' });
+
+      const autoReplyTemplateParams = {
+        to_name: formData.name,
+        to_email: formData.email,
+        message: customerMessage,
+      }
+
+      const sendResponse  =  await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_SEND_TEMPLATE_ID,
+        autoReplyTemplateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      console.log('EmailJS Send Response:', sendResponse);
       
     } catch (err) {
       console.error('EmailJS Error Details:', {
