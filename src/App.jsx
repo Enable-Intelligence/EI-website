@@ -11,7 +11,7 @@ import Home from './components/sections/Home';
 import Solutions from './components/sections/Solutions';
 import Technology from './components/sections/Technology';
 import Resources from './components/sections/Resources';
-
+import FAQs from './components/sections/FAQs';
 /**
  * NOTE: 2 small global tweaks fix the mobile‐view navbar shift
  * 1. Ensure <body> has no default margin & no horizontal scroll.
@@ -188,89 +188,7 @@ function App() {
       <Resources isDarkMode={isDarkMode} />
 
       {/* FAQS SECTION */}
-      <section id="faqs" className={`${isDarkMode ? 'bg-orange-500/90' : 'bg-orange-500'} py-24 px-4 md:px-16 relative text-white overflow-hidden backdrop-blur-sm`}>
-        <div className="max-w-7xl mx-auto relative">
-          {/* Section Header */}
-          <div className="text-center mb-16" data-aos="fade-up">
-            <div className="inline-block bg-white/10 backdrop-blur-sm px-8 py-4 rounded-full mb-6">
-              <h2 className="text-5xl font-black">Frequently Asked Questions</h2>
-            </div>
-            <p className="text-xl text-white/80 max-w-3xl mx-auto">
-              Find answers to common questions about our services and technology
-            </p>
-          </div>
-
-          {/* FAQ Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-6" data-aos="fade-right">
-              {[
-                {
-                  q: "What is SPOCARE?",
-                  a: "SPOCARE is our advanced hospital AI platform that revolutionizes diagnostics through machine learning and predictive analytics."
-                },
-                {
-                  q: "Is my data secure?",
-                  a: "Yes, we implement end-to-end encryption and maintain HIPAA compliance to ensure your data remains protected at all times."
-                },
-                {
-                  q: "Can I export reports?",
-                  a: "Absolutely! You can export reports in multiple formats including PDF and CSV, with customizable templates available."
-                }
-              ].map((f, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-colors"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                >
-                  <h3 className="text-xl font-bold mb-3">{f.q}</h3>
-                  <p className="text-white/80">{f.a}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="space-y-6" data-aos="fade-left">
-              {[
-                {
-                  q: "How does the AI work?",
-                  a: "Our AI combines multiple advanced algorithms to analyze data patterns and provide accurate predictions and insights."
-                },
-                {
-                  q: "What support do you offer?",
-                  a: "We provide 24/7 technical support, regular updates, and dedicated account managers for enterprise clients."
-                },
-                {
-                  q: "Can I customize the platform?",
-                  a: "Yes, our platform is highly customizable to meet your specific needs and requirements."
-                }
-              ].map((f, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-colors"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                >
-                  <h3 className="text-xl font-bold mb-3">{f.q}</h3>
-                  <p className="text-white/80">{f.a}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Contact CTA */}
-          <div className="text-center mt-16" data-aos="fade-up">
-            <p className="text-xl mb-6">Still have questions?</p>
-            <button 
-              className="bg-white text-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:-translate-y-1"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Contact Our Team
-            </button>
-          </div>
-        </div>
-      </section>
+      <FAQs isDarkMode={isDarkMode} />
 
       {/* CONTACT SECTION */}
       <section id="contact" className={`${isDarkMode ? 'bg-gray-800/90' : 'bg-white/90'} pt-24 pb-16 px-4 md:px-16 backdrop-blur-sm`}>
