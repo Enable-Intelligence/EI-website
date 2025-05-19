@@ -1,6 +1,5 @@
 /* src/components/sections/Technology/index.jsx */
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import TechAnimation from "./TechAnimation";
 import FeatureGrid from "./FeatureGrid";
 import SectionHeader from "../../common/SectionHeader";
@@ -34,7 +33,8 @@ export default function Technology({ isDarkMode, isMobile }) {
             toggle={() => setEiSplit((v) => !v)}
           />
 
-          <FeatureGrid isVisible={!isMobile /* simple optimisation */} />
+          
+            <FeatureGrid isVisible={true} />
         </div>
       </div>
     </section>

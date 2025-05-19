@@ -10,7 +10,7 @@ import LoadingScreen from './components/layout/LoadingScreen';
 import Home from './components/sections/Home';
 import Solutions from './components/sections/Solutions';
 import Technology from './components/sections/Technology';
-import resourceImg from "./assets/resource.png";
+import Resources from './components/sections/Resources';
 
 /**
  * NOTE: 2 small global tweaks fix the mobile‐view navbar shift
@@ -182,130 +182,10 @@ function App() {
       <Solutions isMobile={isMobile} />
 
       {/* TECHNOLOGY SECTION */}
-      <Technology isDarkMode={isDarkMode} isMobile={isMobile} />
+      <Technology isDarkMode={isDarkMode} />
 
       {/* RESOURCES SECTION */}
-      <section id="resources" className="py-24 px-4 md:px-16 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto relative">
-          {/* Section Header */}
-          <div className="text-center mb-16" data-aos="fade-up">
-            <div className="inline-block bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-8 py-4 rounded-full mb-6">
-              <h2 className="text-5xl font-black text-orange-500">Resources</h2>
-            </div>
-            <p className={`text-xl ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} max-w-3xl mx-auto`}>
-              Discover insights, guides, and innovations shaping the future of AI
-            </p>
-          </div>
-
-          {/* Featured Resource */}
-          <div className="relative mb-16" data-aos="fade-up">
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="relative h-96 group">
-                  <img src={resourceImg} alt="Featured Resource" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 p-8 text-white">
-                    <span className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold inline-flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                      </svg>
-                      Featured Article
-                    </span>
-                    <h3 className="text-3xl font-bold mt-4">World Refugee Day 2030</h3>
-                    <p className="text-gray-200 mt-2">Exploring the intersection of AI and humanitarian efforts</p>
-                  </div>
-                </div>
-                <div className="p-8 flex flex-col justify-center">
-                  <div className="space-y-6">
-                    <p className="text-gray-600 text-lg leading-relaxed">
-                      Join us in exploring how artificial intelligence is revolutionizing humanitarian aid and refugee support. Discover innovative solutions and real-world applications that are making a difference.
-                    </p>
-                    <div className="flex flex-wrap gap-4">
-                      <button className="bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all transform hover:-translate-y-1 flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        Read Article
-                      </button>
-                      <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Download PDF
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Resource Categories */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                title: "AI in Healthcare",
-                desc: "Exploring the future of medical diagnostics",
-                tag: "Healthcare",
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                  </svg>
-                )
-              },
-              {
-                title: "Machine Learning Basics",
-                desc: "A comprehensive guide for beginners",
-                tag: "Education",
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                )
-              },
-              {
-                title: "Data Privacy",
-                desc: "Best practices for secure AI implementation",
-                tag: "Security",
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                )
-              }
-            ].map((r, i) => (
-              <motion.div
-                key={i}
-                className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
-                data-aos="fade-up"
-                data-aos-delay={i * 100}
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="bg-orange-500/10 p-3 rounded-xl text-orange-500">
-                    {r.icon}
-                  </div>
-                  <div className="flex-1">
-                    <span className="inline-block bg-orange-500/10 text-orange-500 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                      {r.tag}
-                    </span>
-                    <h4 className="text-xl font-bold text-gray-900 mb-3">{r.title}</h4>
-                    <p className="text-gray-600 mb-6">{r.desc}</p>
-                    <div className="flex items-center justify-between">
-                      <button className="text-orange-500 font-semibold hover:text-orange-600 transition-colors flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                        Read Article
-                      </button>
-                      <span className="text-gray-400 text-sm">5 min read</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Resources isDarkMode={isDarkMode} />
 
       {/* FAQS SECTION */}
       <section id="faqs" className={`${isDarkMode ? 'bg-orange-500/90' : 'bg-orange-500'} py-24 px-4 md:px-16 relative text-white overflow-hidden backdrop-blur-sm`}>

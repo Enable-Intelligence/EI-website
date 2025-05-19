@@ -32,7 +32,7 @@ const FEATURES = [
     }
 ];
 
-export default function FeatureGrid({ isVisible }) {
+export default function FeatureGrid() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mt-8 lg:mt-0">
       {FEATURES.map((t, i) => (
@@ -40,7 +40,10 @@ export default function FeatureGrid({ isVisible }) {
           key={t.label}
           className="group relative bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 sm:p-5 md:p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 h-full"
           initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          /* once: true  ⇒ play one time only
+             amount: 0.3 ⇒ fire when 30 % of the card is visible */
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, delay: 0.15 * i }}
         >
         <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>    
